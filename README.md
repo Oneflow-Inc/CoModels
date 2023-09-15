@@ -1,4 +1,4 @@
-# Models inmplemented with OneFlow framework.
+# Models implemented with OneFlow framework.
 
 - cv
 - nlp
