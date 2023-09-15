@@ -79,6 +79,6 @@ class TransformerEncoderModel(nn.Module):
         src = self.src_embedding(src)
         src = self.pos(src)
         out = self.transformer_encoder(src, src_mask, src_key_padding_mask)
-        out = flow.max(out, dim=1)
+        out = flow.max(out, dim=1).values
         out = self.linear(out)
         return out

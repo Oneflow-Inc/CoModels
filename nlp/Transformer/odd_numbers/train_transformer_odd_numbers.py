@@ -183,7 +183,7 @@ def main():
                 shutil.rmtree(args.save_dir)
                 assert not os.path.exists(args.save_dir)
                 os.mkdir(args.save_dir)
-            flow.save(model.state_dict(), args.save_dir)
+            flow.save(model.state_dict(), args.save_dir + '/checkpoint.pt')
         if i % 3 == 2:
             print(test(model, test_times=10))
 

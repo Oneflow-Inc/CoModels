@@ -162,7 +162,7 @@ def train():
                 assert not os.path.exists(args.save_dir)
                 os.mkdir(args.save_dir)
             print("Epoch:{} save best model.".format(best_epoch))
-            flow.save(model.state_dict(), args.save_dir)
+            flow.save(model.state_dict(), args.save_dir + '/checkpoint.pt')
 
     print(
         "Epoch:{} get best accuracy:{}, average training time:{}s".format(

@@ -49,7 +49,7 @@ def main():
         dim_feedforward=args.dim_feedforward,
         dropout=args.dropout,
     )
-    model.load_state_dict(flow.load(args.load_dir))
+    model.load_state_dict(flow.load(args.load_dir + '/checkpoint.pt'))
     model = to_cuda(model)
     print("Done")
 

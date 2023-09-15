@@ -56,7 +56,7 @@ def inference(text):
         dropout=args.dropout,
         batch_first=True,
     )
-    model.load_state_dict(flow.load(args.load_dir))
+    model.load_state_dict(flow.load(args.load_dir + '/checkpoint.pt'))
 
     import re
 
