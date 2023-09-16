@@ -3,8 +3,8 @@
 - cv
 - nlp
   - Transfomer
-    - [text_classfication](./nlp/Transformer/imdb/)
-    - [odd_numbers](./nlp/Transformer/odd_numbers/)
+    - [text_classfication](./nlp/text_classfication/)
+    - [odd_numbers](./nlp/odd_numbers/)
 - science
 - audio
 - vidio
