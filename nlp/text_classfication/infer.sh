@@ -8,7 +8,7 @@ NHEAD=8
 NUM_LAYERS=4
 DIM_FF=1024
 LOAD_DIR="best_model"
-IMDB_PATH="../datasets/imdb"
+IMDB_PATH="./datasets/imdb"
 TEXT="It is awesome! It is nice. The director does a good job!"
 
 if [ ! -d "$LOAD_DIR" ]; then
