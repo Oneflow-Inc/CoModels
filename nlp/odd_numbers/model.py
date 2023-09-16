@@ -1,12 +1,10 @@
 from transformer import Transformer
 import numpy as np
 import math
-import sys
 
 import oneflow as flow
 import oneflow.nn as nn
 
-sys.path.append("../")
 
 TO_CUDA = True
 

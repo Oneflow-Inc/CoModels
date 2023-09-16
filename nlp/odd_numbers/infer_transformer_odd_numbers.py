@@ -1,10 +1,7 @@
-# https://github.com/Kenneth111/TransformerDemo/blob/master/predict_odd_numbers.py
-import sys
 import argparse
 
 import oneflow as flow
 
-sys.path.append("../")
 from model import TransformerModel
 
 TO_CUDA = True
