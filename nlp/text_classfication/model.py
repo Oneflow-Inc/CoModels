@@ -1,11 +1,9 @@
 import numpy as np
-import sys
 import math
 
 import oneflow as flow
 import oneflow.nn as nn
 
-sys.path.append("../")
 from transformer import TransformerEncoder, TransformerEncoderLayer
 
 
