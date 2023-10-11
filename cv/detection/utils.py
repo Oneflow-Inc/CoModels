@@ -275,3 +275,4 @@ def init_distributed_mode(args):
 
     args.distributed = True
     setup_for_distributed(args.rank == 0)
+    
