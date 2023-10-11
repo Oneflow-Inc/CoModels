@@ -101,3 +101,4 @@ def evaluate(model, data_loader, device):
     coco_evaluator.accumulate()
     coco_evaluator.summarize()
     return coco_evaluator
+    
