@@ -236,3 +236,4 @@ def get_coco(root, image_set, transforms, mode="instances"):
 
 def get_coco_kp(root, image_set, transforms):
     return get_coco(root, image_set, transforms, mode="person_keypoints")
+    
