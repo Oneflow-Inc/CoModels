@@ -9,7 +9,7 @@ import flowvision
 from pycocotools import mask as coco_mask
 from pycocotools.coco import COCO
 
-from . import transform as T
+import transform as T
 
 
 def convert_coco_poly_to_mask(segmentations, height, width):

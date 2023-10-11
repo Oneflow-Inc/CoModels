@@ -7,10 +7,13 @@ import oneflow as flow
 import oneflow.utils.data
 import flowvision
 import flowvision.models.detection
+from flowvision.models import ModelCreator
 
-from core import ModelCreator,train_one_epoch,evaluate
-from dataset import get_coco, get_coco_kp, GroupedBatchSampler, create_aspect_ratio_groups
-from dataset import presets,utils
+from engine import train_one_epoch,evaluate
+from coco_utils import get_coco, get_coco_kp
+from group_by_aspect_ratio import GroupedBatchSampler, create_aspect_ratio_groups
+import presets 
+import utils
 import model
 
 def get_dataset(name, image_set, transform, data_path):
@@ -105,6 +108,8 @@ def get_args_parser():
     parser.add_argument("--print-freq", default=20, type=int, help="print frequency")
     parser.add_argument("--output-dir", default=".", help="path where to save")
     parser.add_argument("--resume", default="", help="resume from checkpoint")
+    parser.add_argument("--load", default="", help="load the checkpoint to test")
+    parser.add_argument("--num_classes", default=81, type=int, help="the number of categories")
     parser.add_argument("--start_epoch", default=0, type=int, help="start epoch")
     parser.add_argument("--aspect-ratio-group-factor", default=3, type=int)
     parser.add_argument(
@@ -211,7 +216,7 @@ def main(args):
 
     print("Creating model")
     kwargs = {"trainable_backbone_layers": args.trainable_backbone_layers}
-    model = ModelCreator.create_model(args.model, pretrained=args.pretrained)
+    model = ModelCreator.create_model(args.model, pretrained=args.pretrained, num_classes=args.num_classes)
     model.to(device)
 
     if args.distributed:
@@ -244,6 +249,10 @@ def main(args):
         optimizer.load_state_dict(checkpoint["optimizer"])
         lr_scheduler.load_state_dict(checkpoint["lr_scheduler"])
         args.start_epoch = checkpoint["epoch"] + 1
+
+    if args.load:
+        checkpoint = flow.load(args.load)
+        model.load_state_dict(checkpoint["model"])
 
     if args.test_only:
         evaluate(model, data_loader_test, device=device)

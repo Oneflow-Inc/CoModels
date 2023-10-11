@@ -1,4 +1,4 @@
-from . import transform as T
+import transform as T
 
 
 class DetectionPresetTrain:

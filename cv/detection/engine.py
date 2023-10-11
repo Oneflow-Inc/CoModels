@@ -4,9 +4,9 @@ import time
 import oneflow as flow
 import flowvision
 
-from dataset.coco_utils import get_coco_api_from_dataset
-from dataset.coco_eval import CocoEvaluator
-from dataset import utils
+from coco_utils import get_coco_api_from_dataset
+from coco_eval import CocoEvaluator
+import utils
 
 
 def train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq):

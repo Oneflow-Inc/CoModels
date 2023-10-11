@@ -8,7 +8,7 @@ import oneflow as flow
 from pycocotools.cocoeval import COCOeval
 from pycocotools.coco import COCO
 
-from . import utils
+import utils
 
 
 class CocoEvaluator:
