@@ -5,3 +5,4 @@ python train.py \
   --batch-size 32 \
   --lr 0.002 \
   --weight-decay 0.0005
+  
