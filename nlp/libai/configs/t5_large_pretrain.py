@@ -7,8 +7,8 @@ from .common.data.t5_dataset import dataloader, tokenization
 
 from .common.models.graph import graph
 
-vocab_file = "/data/home/lifei/data/bert_data/bert-base-chinese-vocab.txt"
-data_prefix = "/data/home/lifei/data/bert_data/loss_compara_content_sentence"
+vocab_file = "/data/dataset/bert_data/bert-base-chinese-vocab.txt"
+data_prefix = "/data/dataset/bert_data/loss_compara_content_sentence"
 
 tokenization.tokenizer.vocab_file = vocab_file
 dataloader.train.dataset[0].data_prefix = data_prefix
