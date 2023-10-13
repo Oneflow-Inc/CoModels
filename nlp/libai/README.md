@@ -85,8 +85,8 @@ We provide `train.sh` for execute training. Before invoking the script, perform 
 - Update the data path and vocab path in [T5/train.sh]
 
 ```shell
-sed -i 's#vocab_file = ".*"#vocab_file = "/data/home/data/bert_data/bert-base-chinese-vocab.txt"#' configs/t5_large_pretrain.py
-sed -i 's#data_prefix = ".*"#data_prefix = "/data/home/data/bert_data/loss_compara_content_sentence"#' configs/t5_large_pretrain.py
+sed -i 's#vocab_file = ".*"#vocab_file = "/data/dataset/bert_data/bert-base-chinese-vocab.txt"#' configs/t5_large_pretrain.py
+sed -i 's#data_prefix = ".*"#data_prefix = "/data/dataset/bert_data/loss_compara_content_sentence"#' configs/t5_large_pretrain.py
 ```
 
 <details>
