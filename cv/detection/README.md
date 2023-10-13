@@ -10,6 +10,7 @@ pip install -r requirement.txt
 | Architecture| Backbone |Dataset | Box AP |  Download  |
 |-------------|----------|--------|--------|--------------|
 | SSD      | VGG16 | COCO |25.1 | [model](https://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/flowvision/detection/ssd/ssd300_vgg16.tar.gz)|
+| Faster-RCNN      | ResNet50 | COCO |36.9 | [model](https://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/flowvision/detection/faster_rcnn/fasterrcnn_resnet50_fpn_coco.tar.gz)|
 
 ## Run
 <details>
