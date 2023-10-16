@@ -171,6 +171,7 @@ def main(config):
             logger.info(f"no checkpoint found in {config.OUTPUT}, ignoring auto resume")
 
     if config.MODEL.RESUME:
+        print("resume called")
         max_accuracy = load_checkpoint(
             config, model_without_ddp, optimizer, lr_scheduler, logger
         )
@@ -180,8 +181,12 @@ def main(config):
         )
         if config.EVAL_MODE:
             return
-
+    
     if config.THROUGHPUT_MODE:
+        acc1, acc5, loss = validate(config, data_loader_val, model)
+        logger.info(
+            f"Accuracy of the network on the {len(data_loader_val)} test images: {acc1:.1f}%"
+        )
         throughput(data_loader_val, model, logger)
         return
 
