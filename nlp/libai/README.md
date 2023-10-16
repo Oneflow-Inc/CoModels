@@ -97,4 +97,12 @@ We take the T5 as an example to show how to train the model.
 bash T5/train.sh
 ```
 </details>
+<details>
+<summary>Training code</summary>
+We take the T5 as an example to show how to infer the model.
+
+```Shell
+bash T5/infer.sh
+```
+</details>
 
