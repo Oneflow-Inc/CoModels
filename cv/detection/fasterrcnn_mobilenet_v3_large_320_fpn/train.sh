@@ -6,4 +6,3 @@ python train.py \
   --lr 0.005 \
   --epochs 12 \
   --lr-steps 8 11
-  
