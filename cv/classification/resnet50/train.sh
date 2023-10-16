@@ -13,3 +13,4 @@ python3 -m oneflow.distributed.launch \
     --cfg configs/cnn_default_settings.yaml \
     --model_arch $MODEL_ARCH \
     --epochs 50
+    
