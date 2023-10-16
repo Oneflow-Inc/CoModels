@@ -1,7 +1,7 @@
 python train.py \
   --data-path /dataset/mscoco_2017/ \
   --dataset coco \
-  --model fasterrcnn_resnet50_fpn \
+  --model maskrcnn_resnet50_fpn \
   --batch-size 4 \
   --lr 0.002 \
   --epochs 12 \
