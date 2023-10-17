@@ -11,7 +11,7 @@ python train.py \
 #python train.py \
 #   --data-path /dataset/mscoco_2017/ \
 #   --dataset coco \
-#   --model fasterrcnn_resnet50_fpn \
+#   --model fasterrcnn_mobilenet_v3_large_fpn \
 #   --batch-size 4 \
 #   --load /path/weight \
 #   --test-only
