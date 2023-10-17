@@ -10,6 +10,7 @@ pip install -r requirement.txt
 | Architecture| Backbone |Dataset | Box AP |  Download  |
 |-------------|----------|--------|--------|--------------|
 | SSD      | VGG16 | COCO |25.1 | [model](https://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/flowvision/detection/ssd/ssd300_vgg16.tar.gz)|
+| SSD-lite    | MobileNetV3_Large | COCO |21.3 | [model](https://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/flowvision/detection/ssdlite/ssdlite320_mobilenet_v3_large_coco.tar.gz)|
 | Faster-RCNN      | ResNet50 | COCO |36.9 | [model](https://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/flowvision/detection/faster_rcnn/fasterrcnn_resnet50_fpn_coco.tar.gz)|
 | Faster-RCNN      | MobileNetV3_Large | COCO |32.8 | [model](https://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/flowvision/detection/faster_rcnn/fasterrcnn_mobilenet_v3_large_fpn.tar.gz)|
 | Faster-RCNN      | MobileNetV3_Large_320 | COCO |22.7 | [model](https://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/flowvision/detection/faster_rcnn/fasterrcnn_mobilenet_v3_large_320_fpn.tar.gz)|
