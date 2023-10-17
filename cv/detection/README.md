@@ -12,7 +12,9 @@ pip install -r requirement.txt
 | SSD      | VGG16 | COCO |25.1 | [model](https://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/flowvision/detection/ssd/ssd300_vgg16.tar.gz)|
 | Faster-RCNN      | ResNet50 | COCO |36.9 | [model](https://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/flowvision/detection/faster_rcnn/fasterrcnn_resnet50_fpn_coco.tar.gz)|
 | Faster-RCNN      | MobileNetV3_Large | COCO |32.8 | [model](https://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/flowvision/detection/faster_rcnn/fasterrcnn_mobilenet_v3_large_fpn.tar.gz)|
-| Faster-RCNN      | MobileNetV3_Large_320 | COCO |22.7 | [model](https://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/flowvision/detection/faster_rcnn/fasterrcnn_mobilenet_v3_large_320_fpn.tar.g)|
+| Faster-RCNN      | MobileNetV3_Large_320 | COCO |22.7 | [model](https://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/flowvision/detection/faster_rcnn/fasterrcnn_mobilenet_v3_large_320_fpn.tar.gz)|
+| Mask-RCNN      | ResNet50 | COCO |37.8 | [model](https://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/flowvision/detection/mask_rcnn/maskrcnn_resnet50_fpn_coco.tar.gz)|
+
 
 ## Run
 <details>
