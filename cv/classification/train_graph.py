@@ -300,19 +300,19 @@ def validate(config, data_loader, model):
     for idx, (images, target) in enumerate(data_loader):
         images = images.cuda()
         target = target.cuda()
-        # samples = samples.to_global(
+        samples = samples.to_global(
+            placement=flow.env.all_device_placement("cuda"), sbp=flow.sbp.split(0), check_meta=False
+        )
+        targets = targets.to_global(
+            placement=flow.env.all_device_placement("cuda"), sbp=flow.sbp.split(0), check_meta=False
+        )   
+        # 修改     
+        # images = images.to_global(
         #     placement=flow.env.all_device_placement("cuda"), sbp=flow.sbp.split(0), check_meta=False
         # )
-        # targets = targets.to_global(
+        # target = target.to_global(
         #     placement=flow.env.all_device_placement("cuda"), sbp=flow.sbp.split(0), check_meta=False
-        # )   
-        # 修改     
-        images = images.to_global(
-            placement=flow.env.all_device_placement("cuda"), sbp=flow.sbp.split(0), check_meta=False
-        )
-        target = target.to_global(
-            placement=flow.env.all_device_placement("cuda"), sbp=flow.sbp.split(0), check_meta=False
-        )
+        # )
 
         # compute output
         output = model(images)
