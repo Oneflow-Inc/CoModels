@@ -1,0 +1,98 @@
+dataloader:
+  test:
+  - _target_: libai.data.build_nlp_test_loader
+    dataset:
+      _target_: libai.data.datasets.T5Dataset
+      data_prefix: /data/dataset/bert_data/loss_compara_content_sentence
+      indexed_dataset: {_target_: libai.data.data_utils.get_indexed_dataset, data_impl: mmap, data_prefix: /data/dataset/bert_data/loss_compara_content_sentence, skip_warmup: false}
+      masked_lm_prob: 0.15
+      max_num_samples: 10
+      max_seq_length: 512
+      max_seq_length_dec: 128
+      name: t5
+      seed: 1234
+      short_seq_prob: 0.1
+    test_batch_size: 4
+  train:
+    _target_: libai.data.build_nlp_train_val_test_loader
+    dataset:
+    - _target_: libai.data.datasets.T5Dataset
+      data_prefix: /data/dataset/bert_data/loss_compara_content_sentence
+      indexed_dataset: {_target_: libai.data.data_utils.get_indexed_dataset, data_impl: mmap, data_prefix: /data/dataset/bert_data/loss_compara_content_sentence, skip_warmup: false}
+      masked_lm_prob: 0.15
+      max_seq_length: 512
+      max_seq_length_dec: 128
+      name: t5
+      seed: 1234
+      short_seq_prob: 0.1
+    num_workers: 4
+    splits:
+    - [949.0, 50.0, 1.0]
+    train_val_test_num_samples: null
+    weights: [1.0]
+graph:
+  auto_parallel: {enable_auto_parallel_ignore_user_sbp_config: false, enabled: false, sbp_collector: false, trunk_algo: true}
+  debug: -1
+  enabled: true
+  eval_graph: {_target_: libai.models.utils.GraphBase, is_train: false}
+  global_mode: {enabled: false}
+  train_graph: {_target_: libai.models.utils.GraphBase, is_train: true}
+model:
+  _target_: libai.models.T5ForPreTraining
+  cfg: {amp_enabled: false, apply_query_key_layer_scaling: true, apply_residual_post_layernorm: false, attention_probs_dropout_prob: 0.1, bias_dropout_fusion: true, bias_gelu_fusion: true, embedding_dropout_prob: 0.1, hidden_dropout_prob: 0.1, hidden_layers: 6, hidden_size: 384, initializer_range: 0.02, intermediate_size: 1536, layernorm_eps: 1.0e-05, max_position_embeddings: 512, num_attention_heads: 12, scale_mask_softmax_fusion: true, vocab_size: 30522}
+optim:
+  _target_: oneflow.nn.optimizer.adamw.AdamW
+  betas: [0.9, 0.999]
+  do_bias_correction: true
+  eps: 1.0e-08
+  lr: 0.0001
+  params: {_target_: libai.optim.get_default_optimizer_params, clip_grad_max_norm: 1.0, clip_grad_norm_type: 2.0, weight_decay_bias: 0.0, weight_decay_norm: 0.0}
+  weight_decay: 0.01
+tokenization:
+  append_eod: false
+  make_vocab_size_divisible_by: 128
+  setup: true
+  tokenizer:
+    _target_: libai.tokenizer.BertTokenizer
+    additional_special_tokens: [<extra_id_0>, <extra_id_1>, <extra_id_2>, <extra_id_3>, <extra_id_4>, <extra_id_5>, <extra_id_6>, <extra_id_7>, <extra_id_8>, <extra_id_9>, <extra_id_10>, <extra_id_11>, <extra_id_12>, <extra_id_13>, <extra_id_14>, <extra_id_15>, <extra_id_16>, <extra_id_17>, <extra_id_18>, <extra_id_19>, <extra_id_20>, <extra_id_21>, <extra_id_22>, <extra_id_23>, <extra_id_24>, <extra_id_25>, <extra_id_26>, <extra_id_27>, <extra_id_28>, <extra_id_29>, <extra_id_30>, <extra_id_31>, <extra_id_32>, <extra_id_33>, <extra_id_34>, <extra_id_35>, <extra_id_36>, <extra_id_37>, <extra_id_38>, <extra_id_39>, <extra_id_40>, <extra_id_41>, <extra_id_42>, <extra_id_43>, <extra_id_44>, <extra_id_45>, <extra_id_46>, <extra_id_47>, <extra_id_48>, <extra_id_49>, <extra_id_50>, <extra_id_51>, <extra_id_52>, <extra_id_53>, <extra_id_54>, <extra_id_55>, <extra_id_56>, <extra_id_57>, <extra_id_58>, <extra_id_59>, <extra_id_60>, <extra_id_61>, <extra_id_62>, <extra_id_63>, <extra_id_64>, <extra_id_65>, <extra_id_66>, <extra_id_67>, <extra_id_68>, <extra_id_69>, <extra_id_70>, <extra_id_71>, <extra_id_72>, <extra_id_73>, <extra_id_74>, <extra_id_75>, <extra_id_76>, <extra_id_77>, <extra_id_78>, <extra_id_79>, <extra_id_80>, <extra_id_81>, <extra_id_82>, <extra_id_83>, <extra_id_84>, <extra_id_85>, <extra_id_86>, <extra_id_87>, <extra_id_88>, <extra_id_89>, <extra_id_90>, <extra_id_91>, <extra_id_92>, <extra_id_93>, <extra_id_94>, <extra_id_95>, <extra_id_96>, <extra_id_97>, <extra_id_98>, <extra_id_99>]
+    bos_token: '[BOS]'
+    do_chinese_wwm: true
+    do_lower_case: true
+    eos_token: '[EOS]'
+    vocab_file: /daa/dataset/bert_data/bert-base-chinese-vocab.txt
+train:
+  activation_checkpoint: {enabled: false}
+  amp: {enabled: true}
+  checkpointer: {max_to_keep: 100, period: 5000, save_model_after_n_epoch: null}
+  consumed_train_samples: 0
+  consumed_valid_samples: 0
+  dist: {custom_pipeline_stage_id: null, data_parallel_size: 1, num_gpus_per_node: 1, num_nodes: 1, pipeline_num_layers: 12, pipeline_parallel_size: 1, tensor_parallel_size: 1}
+  evaluation:
+    enabled: true
+    eval_after_n_epoch: null
+    eval_iter: 100000.0
+    eval_metric: Acc@1
+    eval_mode: max
+    eval_period: 5000
+    evaluator: {_target_: libai.evaluation.PPLEvaluator}
+  global_batch_size: 16
+  input_placement_device: cpu
+  load_weight: ''
+  log_period: 20
+  nccl_fusion_max_ops: 24
+  nccl_fusion_threshold_mb: 16
+  num_accumulation_steps: 1
+  output_dir: ./output/t5_output
+  rdma_enabled: true
+  resume: false
+  samples: 160000
+  scheduler: {_target_: libai.scheduler.WarmupCosineLR, alpha: 0.01, warmup_factor: 0.001, warmup_method: linear}
+  seed: 1234
+  start_iter: 0
+  test_micro_batch_size: 32
+  train_epoch: 0
+  train_iter: 10000
+  train_micro_batch_size: 16
+  train_samples: null
+  warmup_ratio: 0
+  zero_optimization: {enabled: false, stage: 1}

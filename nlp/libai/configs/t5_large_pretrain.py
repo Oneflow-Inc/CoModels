@@ -7,7 +7,7 @@ from .common.data.t5_dataset import dataloader, tokenization
 
 from .common.models.graph import graph
 
-vocab_file = "/data/dataset/bert_data/bert-base-chinese-vocab.txt"
+vocab_file = "/daa/dataset/bert_data/bert-base-chinese-vocab.txt"
 data_prefix = "/data/dataset/bert_data/loss_compara_content_sentence"
 
 tokenization.tokenizer.vocab_file = vocab_file

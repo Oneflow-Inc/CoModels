@@ -102,7 +102,7 @@ if __name__ == "__main__":
         mode="huggingface",
     )
 
-    text = ["summarize: She is a student, She is tall, She loves study"]
+    text = ["summarize: She is a student, She is short, She loves play football"]
     dict1 = pipeline(text)
     if dist.is_main_process():
         print(dict1)
