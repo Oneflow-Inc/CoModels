@@ -55,7 +55,8 @@ def save_checkpoint(
 
     save_path = os.path.join(config.OUTPUT, f"model_{epoch}")
     logger.info(f"{save_path} saving......")
-    flow.save(save_state, save_path)
+    # 修改
+    flow.save(save_state, save_path, global_dst_rank=0)
     logger.info(f"{save_path} saved !!!")
 
 
