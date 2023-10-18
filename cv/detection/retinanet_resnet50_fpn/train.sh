@@ -6,6 +6,4 @@ python train.py \
   --lr 0.01 \
   --epochs 12 \
   --lr-steps 8 11 \
-  --weight-decay 0.0001 \
-  --num_classes 81
-
+  --weight-decay 0.0001 
