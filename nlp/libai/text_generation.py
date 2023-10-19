@@ -113,5 +113,3 @@ def main(text, t5_script, model_path):
 
 if __name__ == '__main__':
     main()
-
-

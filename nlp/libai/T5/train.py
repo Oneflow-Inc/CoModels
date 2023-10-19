@@ -25,7 +25,7 @@ train = dict(
     num_accumulation_steps=None,
 
     # The total training iterations
-    train_iter=1000,
+    train_iter=10000,
     # The total training epochs, will be scaled to training iterations automatically.
     # The actual total training iterations will be calculated by the
     # formula `max(train_iter, train_epoch * iter_per_epoch)`.
@@ -87,7 +87,7 @@ train = dict(
         evaluator=LazyCall(ClsEvaluator)(topk=(1, 5)),
         eval_period=5000,
         eval_after_n_epoch=None,
-        eval_iter=32,  # running steps for validation/test
+        eval_iter=1e2,  # running steps for validation/test
 
         # Metrics to be used for best model checkpoint.
         eval_metric="Acc@1",
