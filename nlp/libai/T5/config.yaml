@@ -63,7 +63,7 @@ tokenization:
 train:
   activation_checkpoint: {enabled: false}
   amp: {enabled: true}
-  checkpointer: {max_to_keep: 2000, period: 100, save_model_after_n_epoch: null}
+  checkpointer: {max_to_keep: 100, period: 2000, save_model_after_n_epoch: null}
   consumed_train_samples: 0
   consumed_valid_samples: 0
   dist: {custom_pipeline_stage_id: null, data_parallel_size: 1, num_gpus_per_node: 1, num_nodes: 1, pipeline_num_layers: 12, pipeline_parallel_size: 1, tensor_parallel_size: 1}
