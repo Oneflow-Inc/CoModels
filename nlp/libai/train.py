@@ -31,6 +31,7 @@ logger = logging.getLogger("libai." + __name__)
 
 def main(args):
     cfg = LazyConfig.load(args.config_file)
+    print(cfg)
     cfg = LazyConfig.apply_overrides(cfg, args.opts)
     default_setup(cfg, args)
 
@@ -61,7 +62,7 @@ def main(args):
             logger.info("No dataset in dataloader.test, please set dataset for dataloader.test")
         _ = DefaultTrainer.test(cfg, test_loader, model)
         return
-
+    
     trainer = DefaultTrainer(cfg)
     return trainer.train()
 

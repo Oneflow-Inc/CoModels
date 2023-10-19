@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
 
-CONFIG=${2:-"configs/t5_large_pretrain.py"}
-
-sed -i 's#vocab_file = ".*"#vocab_file = "/data/dataset/bert_data/bert-base-chinese-vocab.txt"#' configs/t5_large_pretrain.py
-sed -i 's#data_prefix = ".*"#data_prefix = "/data/dataset/bert_data/loss_compara_content_sentence"#' configs/t5_large_pretrain.py
-
+#CONFIG=${1:-"configs/t5_large_pretrain.py"}
+CONFIG=${1:-'T5/config.yaml'}
 export ONEFLOW_FUSE_OPTIMIZER_UPDATE_CAST=true
 
 python3 -m oneflow.distributed.launch \
@@ -13,6 +10,7 @@ python3 -m oneflow.distributed.launch \
         --node_rank 0 \
         --master_addr 127.0.0.1\
         --master_port 12345 \
-        train_net.py \
-	--config-file $CONFIG  ${@:4}
+        train.py \
+	--config-file $CONFIG \
+#	${@:4}
 
