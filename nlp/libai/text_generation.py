@@ -89,7 +89,11 @@ class TextGenerationPipeline(BasePipeline):
         ]
         return records
 
-#if __name__ == "__main__":
+#import click
+
+#@click.command()
+#@click.option("--text", help="Input text")
+#def main(text):
 #    pipeline = TextGenerationPipeline(
 #        "./T5/t5_small.py",
 #        data_parallel=1,
@@ -97,28 +101,31 @@ class TextGenerationPipeline(BasePipeline):
 #        pipeline_parallel=2,
 #        pipeline_stage_id=[0] * 12 + [1] * 12,
 #        pipeline_num_layers=12 * 2,
-#        model_path="/path/to/t5-base",
+#        model_path="/data/hf_models/t5-base",
 #        mode="huggingface",
 #    )
 
-#    text = ["summarize: She is a student, She is tall, She loves study"]
-#    dict1 = pipeline(text)
+#    dict1 = pipeline([text])
 #    if dist.is_main_process():
 #        print(dict1)
 
+#if __name__ == '__main__':
+#    main()
 import click
 
 @click.command()
 @click.option("--text", help="Input text")
-def main(text):
+@click.option("--t5_script", default="./T5/t5_small.py", help="Path to T5 script")
+@click.option("--model_path", default="/data/hf_models/t5-base", help="Path to T5 model")
+def main(text, t5_script, model_path):
     pipeline = TextGenerationPipeline(
-        "./T5/t5_small.py",
+        t5_script,
         data_parallel=1,
         tensor_parallel=2,
         pipeline_parallel=2,
         pipeline_stage_id=[0] * 12 + [1] * 12,
         pipeline_num_layers=12 * 2,
-        model_path="/data/hf_models/t5-base",
+        model_path=model_path,
         mode="huggingface",
     )
 
@@ -128,4 +135,5 @@ def main(text):
 
 if __name__ == '__main__':
     main()
+
 
