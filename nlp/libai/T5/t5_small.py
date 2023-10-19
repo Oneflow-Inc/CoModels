@@ -1,9 +1,28 @@
-from .mt5_base import cfg
 from libai.config import LazyCall
 from libai.tokenizer import T5Tokenizer
-from projects.MT5.mt5_model import MT5Model, MT5ForPreTraining
+from projects.MT5.mt5_model import MT5Model
 from configs.common.train import train
 from configs.common.data.t5_dataset import tokenization
+cfg = dict(
+    vocab_size=250112,
+    hidden_size=512,
+    hidden_layers=8,
+    num_attention_heads=6,
+    head_size=64,
+    intermediate_size=1024,
+    hidden_dropout_prob=0.1,
+    attention_probs_dropout_prob=0.1,
+    embedding_dropout_prob=0.1,
+    relative_attention_num_buckets=32,
+    initializer_range=1.0,
+    layernorm_eps=1e-06,
+    amp_enabled=False,
+    model_type="mt5",
+    eos_token_id=1,
+    padding_idx=0,
+    is_encoder_decoder=True,
+    tie_word_embeddings=False,
+)
 
 cfg.update(
     model_type="t5",
@@ -41,6 +60,6 @@ cfg.update(
 
 model = LazyCall(MT5Model)(cfg=cfg)
 tokenization.tokenizer = LazyCall(T5Tokenizer)(
-    vocab_file="/path/to/spiece.model",
+    vocab_file="/data/hf_models/t5-base/spiece.model",
     add_bos_token=True,
 )

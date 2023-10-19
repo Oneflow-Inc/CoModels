@@ -62,7 +62,7 @@ def main(args):
             logger.info("No dataset in dataloader.test, please set dataset for dataloader.test")
         _ = DefaultTrainer.test(cfg, test_loader, model)
         return
-    
+
     trainer = DefaultTrainer(cfg)
     return trainer.train()
 
@@ -70,3 +70,4 @@ def main(args):
 if __name__ == "__main__":
     args = default_argument_parser().parse_args()
     main(args)
+
