@@ -25,7 +25,7 @@ train = dict(
     num_accumulation_steps=None,
 
     # The total training iterations
-    train_iter=1000,
+    train_iter=10000,
     # The total training epochs, will be scaled to training iterations automatically.
     # The actual total training iterations will be calculated by the
     # formula `max(train_iter, train_epoch * iter_per_epoch)`.
@@ -68,7 +68,7 @@ train = dict(
 
     # Save a model checkpoint after every this number of iterations,
     # and maximum number of checkpoint will be kept.
-    checkpointer=dict(period=100, max_to_keep=100, save_model_after_n_epoch=None),
+    checkpointer=dict(period=2000, max_to_keep=100, save_model_after_n_epoch=None),
 
     # Options for evaluation
 
@@ -82,7 +82,7 @@ train = dict(
     # You can set the maximum evaluation iterations to run for validation/test.
     # You can also set a customized evaluator for use.
     evaluation=dict(
-        enabled=False,
+        enabled=True,
         # evaluator for calculating top-k acc
         evaluator=LazyCall(ClsEvaluator)(topk=(1, 5)),
         eval_period=5000,
