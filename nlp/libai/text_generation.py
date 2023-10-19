@@ -89,28 +89,6 @@ class TextGenerationPipeline(BasePipeline):
         ]
         return records
 
-#import click
-
-#@click.command()
-#@click.option("--text", help="Input text")
-#def main(text):
-#    pipeline = TextGenerationPipeline(
-#        "./T5/t5_small.py",
-#        data_parallel=1,
-#        tensor_parallel=2,
-#        pipeline_parallel=2,
-#        pipeline_stage_id=[0] * 12 + [1] * 12,
-#        pipeline_num_layers=12 * 2,
-#        model_path="/data/hf_models/t5-base",
-#        mode="huggingface",
-#    )
-
-#    dict1 = pipeline([text])
-#    if dist.is_main_process():
-#        print(dict1)
-
-#if __name__ == '__main__':
-#    main()
 import click
 
 @click.command()
