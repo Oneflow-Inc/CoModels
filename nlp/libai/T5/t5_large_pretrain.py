@@ -1,11 +1,11 @@
 from libai.config import LazyCall
 from libai.evaluation import PPLEvaluator
 #from t5 import pretrain_model as model
-import train
+from .train import train
 print(train)
 from .optim import optim
 from .t5_dataset import dataloader, tokenization
-import graph
+from .graph import graph
 
 from omegaconf import DictConfig
 from libai.config import LazyCall

@@ -1,0 +1,488 @@
+[10/19 15:28:05] libai INFO: Rank of current process: 0. World size: 1
+[10/19 15:28:05] libai INFO: Command line arguments: Namespace(config_file='T5/t5_large_pretrain.py', eval_only=False, fast_dev_run=False, opts=[], resume=False)
+[10/19 15:28:05] libai INFO: Contents of args.config_file=T5/t5_large_pretrain.py:
+[38;5;204mfrom[39m[38;5;15m [39m[38;5;15mlibai[39m[38;5;15m.[39m[38;5;15mconfig[39m[38;5;15m [39m[38;5;204mimport[39m[38;5;15m [39m[38;5;15mLazyCall[39m
+[38;5;204mfrom[39m[38;5;15m [39m[38;5;15mlibai[39m[38;5;15m.[39m[38;5;15mevaluation[39m[38;5;15m [39m[38;5;204mimport[39m[38;5;15m [39m[38;5;15mPPLEvaluator[39m
+[38;5;245m#from t5 import pretrain_model as model[39m
+[38;5;204mfrom[39m[38;5;15m [39m[38;5;15m.[39m[38;5;15mtrain[39m[38;5;15m [39m[38;5;204mimport[39m[38;5;15m [39m[38;5;15mtrain[39m
+[38;5;15mprint[39m[38;5;15m([39m[38;5;15mtrain[39m[38;5;15m)[39m
+[38;5;204mfrom[39m[38;5;15m [39m[38;5;15m.[39m[38;5;15moptim[39m[38;5;15m [39m[38;5;204mimport[39m[38;5;15m [39m[38;5;15moptim[39m
+[38;5;204mfrom[39m[38;5;15m [39m[38;5;15m.[39m[38;5;15mt5_dataset[39m[38;5;15m [39m[38;5;204mimport[39m[38;5;15m [39m[38;5;15mdataloader[39m[38;5;15m,[39m[38;5;15m [39m[38;5;15mtokenization[39m
+[38;5;204mfrom[39m[38;5;15m [39m[38;5;15m.[39m[38;5;15mgraph[39m[38;5;15m [39m[38;5;204mimport[39m[38;5;15m [39m[38;5;15mgraph[39m
+
+[38;5;204mfrom[39m[38;5;15m [39m[38;5;15momegaconf[39m[38;5;15m [39m[38;5;204mimport[39m[38;5;15m [39m[38;5;15mDictConfig[39m
+[38;5;204mfrom[39m[38;5;15m [39m[38;5;15mlibai[39m[38;5;15m.[39m[38;5;15mconfig[39m[38;5;15m [39m[38;5;204mimport[39m[38;5;15m [39m[38;5;15mLazyCall[39m
+[38;5;204mfrom[39m[38;5;15m [39m[38;5;15mlibai[39m[38;5;15m.[39m[38;5;15mmodels[39m[38;5;15m [39m[38;5;204mimport[39m[38;5;15m [39m[38;5;15mT5Model[39m[38;5;15m,[39m[38;5;15m [39m[38;5;15mT5ForPreTraining[39m
+
+[38;5;15mcfg[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;15mdict[39m[38;5;15m([39m
+[38;5;15m    [39m[38;5;15mvocab_size[39m[38;5;204m=[39m[38;5;141m30522[39m[38;5;15m,[39m
+[38;5;15m    [39m[38;5;15mhidden_size[39m[38;5;204m=[39m[38;5;141m768[39m[38;5;15m,[39m
+[38;5;15m    [39m[38;5;15mhidden_layers[39m[38;5;204m=[39m[38;5;141m6[39m[38;5;15m,[39m
+[38;5;15m    [39m[38;5;15mnum_attention_heads[39m[38;5;204m=[39m[38;5;141m16[39m[38;5;15m,[39m
+[38;5;15m    [39m[38;5;15mintermediate_size[39m[38;5;204m=[39m[38;5;141m1536[39m[38;5;15m,[39m
+[38;5;15m    [39m[38;5;15mhidden_dropout_prob[39m[38;5;204m=[39m[38;5;141m0.1[39m[38;5;15m,[39m
+[38;5;15m    [39m[38;5;15mattention_probs_dropout_prob[39m[38;5;204m=[39m[38;5;141m0.1[39m[38;5;15m,[39m
+[38;5;15m    [39m[38;5;15mmax_position_embeddings[39m[38;5;204m=[39m[38;5;141m512[39m[38;5;15m,[39m
+[38;5;15m    [39m[38;5;15membedding_dropout_prob[39m[38;5;204m=[39m[38;5;141m0.1[39m[38;5;15m,[39m
+[38;5;15m    [39m[38;5;15minitializer_range[39m[38;5;204m=[39m[38;5;141m0.02[39m[38;5;15m,[39m
+[38;5;15m    [39m[38;5;15mlayernorm_eps[39m[38;5;204m=[39m[38;5;141m1e-5[39m[38;5;15m,[39m
+[38;5;15m    [39m[38;5;15mbias_gelu_fusion[39m[38;5;204m=[39m[38;5;81mTrue[39m[38;5;15m,[39m
+[38;5;15m    [39m[38;5;15mbias_dropout_fusion[39m[38;5;204m=[39m[38;5;81mTrue[39m[38;5;15m,[39m
+[38;5;15m    [39m[38;5;15mscale_mask_softmax_fusion[39m[38;5;204m=[39m[38;5;81mTrue[39m[38;5;15m,[39m
+[38;5;15m    [39m[38;5;15mapply_query_key_layer_scaling[39m[38;5;204m=[39m[38;5;81mTrue[39m[38;5;15m,[39m
+[38;5;15m    [39m[38;5;15mapply_residual_post_layernorm[39m[38;5;204m=[39m[38;5;81mFalse[39m[38;5;15m,[39m
+[38;5;15m    [39m[38;5;15mamp_enabled[39m[38;5;204m=[39m[38;5;81mFalse[39m[38;5;15m,[39m
+[38;5;15m)[39m
+
+[38;5;15mcfg[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;15mDictConfig[39m[38;5;15m([39m[38;5;15mcfg[39m[38;5;15m)[39m
+
+[38;5;15mt5_model[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;15mLazyCall[39m[38;5;15m([39m[38;5;15mT5Model[39m[38;5;15m)[39m[38;5;15m([39m[38;5;15mcfg[39m[38;5;204m=[39m[38;5;15mcfg[39m[38;5;15m)[39m
+
+[38;5;15mpretrain_model[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;15mLazyCall[39m[38;5;15m([39m[38;5;15mT5ForPreTraining[39m[38;5;15m)[39m[38;5;15m([39m[38;5;15mcfg[39m[38;5;204m=[39m[38;5;15mcfg[39m[38;5;15m)[39m
+[38;5;15mmodel[39m[38;5;204m=[39m[38;5;15mpretrain_model[39m
+
+[38;5;15mvocab_file[39m[38;5;15m [39m[38;5;204m=[39m[38;5;186m"[39m[38;5;186m/data/dataset/bert_data/bert-base-chinese-vocab.txt[39m[38;5;186m"[39m
+[38;5;15mdata_prefix[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;186m"[39m[38;5;186m/data/dataset/bert_data/loss_compara_content_sentence[39m[38;5;186m"[39m
+
+[38;5;15mtokenization[39m[38;5;204m.[39m[38;5;15mtokenizer[39m[38;5;204m.[39m[38;5;15mvocab_file[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;15mvocab_file[39m
+[38;5;15mdataloader[39m[38;5;204m.[39m[38;5;15mtrain[39m[38;5;204m.[39m[38;5;15mdataset[39m[38;5;15m[[39m[38;5;141m0[39m[38;5;15m][39m[38;5;204m.[39m[38;5;15mdata_prefix[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;15mdata_prefix[39m
+[38;5;15mdataloader[39m[38;5;204m.[39m[38;5;15mtrain[39m[38;5;204m.[39m[38;5;15mdataset[39m[38;5;15m[[39m[38;5;141m0[39m[38;5;15m][39m[38;5;204m.[39m[38;5;15mindexed_dataset[39m[38;5;204m.[39m[38;5;15mdata_prefix[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;15mdata_prefix[39m
+[38;5;15mdataloader[39m[38;5;204m.[39m[38;5;15mtest[39m[38;5;15m[[39m[38;5;141m0[39m[38;5;15m][39m[38;5;204m.[39m[38;5;15mdataset[39m[38;5;204m.[39m[38;5;15mdata_prefix[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;15mdata_prefix[39m
+[38;5;15mdataloader[39m[38;5;204m.[39m[38;5;15mtest[39m[38;5;15m[[39m[38;5;141m0[39m[38;5;15m][39m[38;5;204m.[39m[38;5;15mdataset[39m[38;5;204m.[39m[38;5;15mindexed_dataset[39m[38;5;204m.[39m[38;5;15mdata_prefix[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;15mdata_prefix[39m
+
+[38;5;245m# T5-large model config[39m
+[38;5;15mmodel[39m[38;5;204m.[39m[38;5;15mcfg[39m[38;5;204m.[39m[38;5;15mnum_attention_heads[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;141m12[39m
+[38;5;15mmodel[39m[38;5;204m.[39m[38;5;15mcfg[39m[38;5;204m.[39m[38;5;15mhidden_size[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;141m384[39m
+[38;5;15mmodel[39m[38;5;204m.[39m[38;5;15mcfg[39m[38;5;204m.[39m[38;5;15mhidden_layers[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;141m6[39m
+
+[38;5;15mtrain[39m[38;5;204m.[39m[38;5;15minput_placement_device[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;186m"[39m[38;5;186mcpu[39m[38;5;186m"[39m
+
+[38;5;15mtrain[39m[38;5;204m.[39m[38;5;15mdist[39m[38;5;204m.[39m[38;5;15mpipeline_num_layers[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;141m2[39m[38;5;15m [39m[38;5;204m*[39m[38;5;15m [39m[38;5;15mmodel[39m[38;5;204m.[39m[38;5;15mcfg[39m[38;5;204m.[39m[38;5;15mhidden_layers[39m
+
+[38;5;15mtrain[39m[38;5;204m.[39m[38;5;15mtrain_micro_batch_size[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;141m16[39m
+[38;5;15mtrain[39m[38;5;204m.[39m[38;5;15mamp[39m[38;5;204m.[39m[38;5;15menabled[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;81mTrue[39m
+
+[38;5;15mtrain[39m[38;5;204m.[39m[38;5;15mevaluation[39m[38;5;204m.[39m[38;5;15mevaluator[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;15mLazyCall[39m[38;5;15m([39m[38;5;15mPPLEvaluator[39m[38;5;15m)[39m[38;5;15m([39m[38;5;15m)[39m
+
+[38;5;15mtrain[39m[38;5;204m.[39m[38;5;15moutput_dir[39m[38;5;15m [39m[38;5;204m=[39m[38;5;15m [39m[38;5;186m"[39m[38;5;186m./output/t5_output[39m[38;5;186m"[39m
+
+[10/19 15:28:05] libai INFO: Full config saved to ./output/t5_output/config.yaml
+[10/19 15:28:05] lb.engine.default INFO: > compiling dataset index builder ...
+[10/19 15:28:05] lb.engine.default INFO: >>> done with dataset index builder. Compilation time: 0.041 seconds
+[10/19 15:28:05] lb.engine.default INFO: >>> done with compiling. Compilation time: 0.041 seconds
+[10/19 15:28:05] lb.engine.default INFO: Prepare training, validating, testing set
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: building dataset index ...
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: warming up index mmap file...
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: reading sizes...
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: reading pointers...
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: reading document index...
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: warming up data mmap file...
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: creating numpy buffer of mmap...
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: creating memory view of numpy buffer...
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: Finished creating indexed dataset in 0.070995 seconds
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: indexed dataset stats:
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: number of documents: 50000
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: number of sentences: 1249934
+[10/19 15:28:05] lb.data.data_utils.dataset_utils INFO:  > loading indexed mapping from /data/dataset/bert_data/loss_compara_content_sentence_t5_indexmap_16000mns_510msl_0.10ssp_1234s.npy
+[10/19 15:28:05] lb.data.data_utils.dataset_utils INFO:     loaded indexed file in 0.003 seconds
+[10/19 15:28:05] lb.data.data_utils.dataset_utils INFO:     total number of samples: 113841
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding [BOS] to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding [EOS] to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_0> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_1> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_2> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_3> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_4> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_5> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_6> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_7> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_8> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_9> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_10> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_11> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_12> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_13> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_14> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_15> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_16> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_17> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_18> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_19> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_20> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_21> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_22> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_23> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_24> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_25> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_26> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_27> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_28> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_29> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_30> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_31> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_32> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_33> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_34> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_35> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_36> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_37> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_38> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_39> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_40> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_41> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_42> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_43> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_44> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_45> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_46> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_47> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_48> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_49> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_50> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_51> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_52> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_53> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_54> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_55> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_56> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_57> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_58> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_59> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_60> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_61> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_62> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_63> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_64> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_65> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_66> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_67> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_68> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_69> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_70> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_71> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_72> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_73> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_74> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_75> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_76> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_77> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_78> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_79> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_80> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_81> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_82> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_83> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_84> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_85> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_86> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_87> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_88> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_89> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_90> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_91> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_92> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_93> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_94> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_95> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_96> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_97> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_98> to the vocabulary
+[10/19 15:28:05] lb.tokenizer.tokenization_base INFO: Adding <extra_id_99> to the vocabulary
+[10/19 15:28:05] lb.data.data_utils.dataset_utils INFO:  > loading indexed mapping from /data/dataset/bert_data/loss_compara_content_sentence_t5_indexmap_32mns_510msl_0.10ssp_1234s.npy
+[10/19 15:28:05] lb.data.data_utils.dataset_utils INFO:     loaded indexed file in 0.000 seconds
+[10/19 15:28:05] lb.data.data_utils.dataset_utils INFO:     total number of samples: 5925
+[10/19 15:28:05] lb.data.data_utils.dataset_utils INFO:  > loading indexed mapping from /data/dataset/bert_data/loss_compara_content_sentence_t5_indexmap_32mns_510msl_0.10ssp_1234s.npy
+[10/19 15:28:05] lb.data.data_utils.dataset_utils INFO:     loaded indexed file in 0.000 seconds
+[10/19 15:28:05] lb.data.data_utils.dataset_utils INFO:     total number of samples: 5925
+[10/19 15:28:05] lb.engine.default INFO: Prepare testing set
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: building dataset index ...
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: warming up index mmap file...
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: reading sizes...
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: reading pointers...
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: reading document index...
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: warming up data mmap file...
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: creating numpy buffer of mmap...
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: creating memory view of numpy buffer...
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: Finished creating indexed dataset in 0.072730 seconds
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: indexed dataset stats:
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: number of documents: 50000
+[10/19 15:28:05] lb.data.data_utils.indexed_dataset INFO: number of sentences: 1249934
+[10/19 15:28:05] lb.data.data_utils.dataset_utils INFO:  > loading indexed mapping from /data/dataset/bert_data/loss_compara_content_sentence_t5_indexmap_10mns_510msl_0.10ssp_1234s.npy
+[10/19 15:28:05] lb.data.data_utils.dataset_utils INFO:     loaded indexed file in 0.001 seconds
+[10/19 15:28:05] lb.data.data_utils.dataset_utils INFO:     total number of samples: 119906
+[10/19 15:28:05] lb.engine.default INFO: Auto-scaling the config to train.train_iter=1000, train.warmup_iter=0
+[10/19 15:28:05] libai INFO: > Start building model...
+[10/19 15:28:07] lb.engine.default INFO: Model:
+T5ForPreTraining(
+  (t5_model): T5Model(
+    (embedding): T5Embedding(
+      (word_embeddings): VocabEmbedding(num_embeddings=21248, embedding_dim=384)
+      (position_embeddings): Embedding(num_embeddings=512, embedding_dim=384)
+      (embedding_dropout): Dropout(p=0.1, inplace=False)
+    )
+    (extended_attn_mask): ExtendedMask()
+    (encoder): Sequential(
+      (layers): ModuleList(
+        (0): TransformerLayer(
+          (drop_path): Identity()
+          (input_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (self_attention): MultiheadAttention(
+            hidden_size=384, num_heads=12, is_cross_attention=False
+            (dropout): Dropout(p=0.1, inplace=False)
+            (query_key_value): Linear1D(in_features=384, out_features=1152, bias=True, parallel=col)
+            (dense): Linear1D(in_features=384, out_features=384, bias=True, parallel=row)
+          )
+          (post_attention_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (mlp): MLP(
+            bias_gelu_fusion=True, bias_dropout_fusion=True, dropout=0.1
+            (dense_h_to_4h): Linear1D(in_features=384, out_features=1536, bias=True, parallel=col)
+            (dense_4h_to_h): Linear1D(in_features=1536, out_features=384, bias=True, parallel=row)
+          )
+        )
+        (1): TransformerLayer(
+          (drop_path): Identity()
+          (input_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (self_attention): MultiheadAttention(
+            hidden_size=384, num_heads=12, is_cross_attention=False
+            (dropout): Dropout(p=0.1, inplace=False)
+            (query_key_value): Linear1D(in_features=384, out_features=1152, bias=True, parallel=col)
+            (dense): Linear1D(in_features=384, out_features=384, bias=True, parallel=row)
+          )
+          (post_attention_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (mlp): MLP(
+            bias_gelu_fusion=True, bias_dropout_fusion=True, dropout=0.1
+            (dense_h_to_4h): Linear1D(in_features=384, out_features=1536, bias=True, parallel=col)
+            (dense_4h_to_h): Linear1D(in_features=1536, out_features=384, bias=True, parallel=row)
+          )
+        )
+        (2): TransformerLayer(
+          (drop_path): Identity()
+          (input_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (self_attention): MultiheadAttention(
+            hidden_size=384, num_heads=12, is_cross_attention=False
+            (dropout): Dropout(p=0.1, inplace=False)
+            (query_key_value): Linear1D(in_features=384, out_features=1152, bias=True, parallel=col)
+            (dense): Linear1D(in_features=384, out_features=384, bias=True, parallel=row)
+          )
+          (post_attention_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (mlp): MLP(
+            bias_gelu_fusion=True, bias_dropout_fusion=True, dropout=0.1
+            (dense_h_to_4h): Linear1D(in_features=384, out_features=1536, bias=True, parallel=col)
+            (dense_4h_to_h): Linear1D(in_features=1536, out_features=384, bias=True, parallel=row)
+          )
+        )
+        (3): TransformerLayer(
+          (drop_path): Identity()
+          (input_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (self_attention): MultiheadAttention(
+            hidden_size=384, num_heads=12, is_cross_attention=False
+            (dropout): Dropout(p=0.1, inplace=False)
+            (query_key_value): Linear1D(in_features=384, out_features=1152, bias=True, parallel=col)
+            (dense): Linear1D(in_features=384, out_features=384, bias=True, parallel=row)
+          )
+          (post_attention_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (mlp): MLP(
+            bias_gelu_fusion=True, bias_dropout_fusion=True, dropout=0.1
+            (dense_h_to_4h): Linear1D(in_features=384, out_features=1536, bias=True, parallel=col)
+            (dense_4h_to_h): Linear1D(in_features=1536, out_features=384, bias=True, parallel=row)
+          )
+        )
+        (4): TransformerLayer(
+          (drop_path): Identity()
+          (input_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (self_attention): MultiheadAttention(
+            hidden_size=384, num_heads=12, is_cross_attention=False
+            (dropout): Dropout(p=0.1, inplace=False)
+            (query_key_value): Linear1D(in_features=384, out_features=1152, bias=True, parallel=col)
+            (dense): Linear1D(in_features=384, out_features=384, bias=True, parallel=row)
+          )
+          (post_attention_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (mlp): MLP(
+            bias_gelu_fusion=True, bias_dropout_fusion=True, dropout=0.1
+            (dense_h_to_4h): Linear1D(in_features=384, out_features=1536, bias=True, parallel=col)
+            (dense_4h_to_h): Linear1D(in_features=1536, out_features=384, bias=True, parallel=row)
+          )
+        )
+        (5): TransformerLayer(
+          (drop_path): Identity()
+          (input_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (self_attention): MultiheadAttention(
+            hidden_size=384, num_heads=12, is_cross_attention=False
+            (dropout): Dropout(p=0.1, inplace=False)
+            (query_key_value): Linear1D(in_features=384, out_features=1152, bias=True, parallel=col)
+            (dense): Linear1D(in_features=384, out_features=384, bias=True, parallel=row)
+          )
+          (post_attention_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (mlp): MLP(
+            bias_gelu_fusion=True, bias_dropout_fusion=True, dropout=0.1
+            (dense_h_to_4h): Linear1D(in_features=384, out_features=1536, bias=True, parallel=col)
+            (dense_4h_to_h): Linear1D(in_features=1536, out_features=384, bias=True, parallel=row)
+          )
+        )
+      )
+      (final_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+    )
+    (decoder): Sequential(
+      (layers): ModuleList(
+        (0): TransformerLayer(
+          (drop_path): Identity()
+          (input_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (self_attention): MultiheadAttention(
+            hidden_size=384, num_heads=12, is_cross_attention=False
+            (dropout): Dropout(p=0.1, inplace=False)
+            (query_key_value): Linear1D(in_features=384, out_features=1152, bias=True, parallel=col)
+            (dense): Linear1D(in_features=384, out_features=384, bias=True, parallel=row)
+          )
+          (post_attention_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (cross_attention): MultiheadAttention(
+            hidden_size=384, num_heads=12, is_cross_attention=True
+            (dropout): Dropout(p=0.1, inplace=False)
+            (query): Linear1D(in_features=384, out_features=384, bias=True, parallel=col)
+            (key_value): Linear1D(in_features=384, out_features=768, bias=True, parallel=col)
+            (dense): Linear1D(in_features=384, out_features=384, bias=True, parallel=row)
+          )
+          (post_cross_attention_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (mlp): MLP(
+            bias_gelu_fusion=True, bias_dropout_fusion=True, dropout=0.1
+            (dense_h_to_4h): Linear1D(in_features=384, out_features=1536, bias=True, parallel=col)
+            (dense_4h_to_h): Linear1D(in_features=1536, out_features=384, bias=True, parallel=row)
+          )
+        )
+        (1): TransformerLayer(
+          (drop_path): Identity()
+          (input_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (self_attention): MultiheadAttention(
+            hidden_size=384, num_heads=12, is_cross_attention=False
+            (dropout): Dropout(p=0.1, inplace=False)
+            (query_key_value): Linear1D(in_features=384, out_features=1152, bias=True, parallel=col)
+            (dense): Linear1D(in_features=384, out_features=384, bias=True, parallel=row)
+          )
+          (post_attention_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (cross_attention): MultiheadAttention(
+            hidden_size=384, num_heads=12, is_cross_attention=True
+            (dropout): Dropout(p=0.1, inplace=False)
+            (query): Linear1D(in_features=384, out_features=384, bias=True, parallel=col)
+            (key_value): Linear1D(in_features=384, out_features=768, bias=True, parallel=col)
+            (dense): Linear1D(in_features=384, out_features=384, bias=True, parallel=row)
+          )
+          (post_cross_attention_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (mlp): MLP(
+            bias_gelu_fusion=True, bias_dropout_fusion=True, dropout=0.1
+            (dense_h_to_4h): Linear1D(in_features=384, out_features=1536, bias=True, parallel=col)
+            (dense_4h_to_h): Linear1D(in_features=1536, out_features=384, bias=True, parallel=row)
+          )
+        )
+        (2): TransformerLayer(
+          (drop_path): Identity()
+          (input_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (self_attention): MultiheadAttention(
+            hidden_size=384, num_heads=12, is_cross_attention=False
+            (dropout): Dropout(p=0.1, inplace=False)
+            (query_key_value): Linear1D(in_features=384, out_features=1152, bias=True, parallel=col)
+            (dense): Linear1D(in_features=384, out_features=384, bias=True, parallel=row)
+          )
+          (post_attention_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (cross_attention): MultiheadAttention(
+            hidden_size=384, num_heads=12, is_cross_attention=True
+            (dropout): Dropout(p=0.1, inplace=False)
+            (query): Linear1D(in_features=384, out_features=384, bias=True, parallel=col)
+            (key_value): Linear1D(in_features=384, out_features=768, bias=True, parallel=col)
+            (dense): Linear1D(in_features=384, out_features=384, bias=True, parallel=row)
+          )
+          (post_cross_attention_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (mlp): MLP(
+            bias_gelu_fusion=True, bias_dropout_fusion=True, dropout=0.1
+            (dense_h_to_4h): Linear1D(in_features=384, out_features=1536, bias=True, parallel=col)
+            (dense_4h_to_h): Linear1D(in_features=1536, out_features=384, bias=True, parallel=row)
+          )
+        )
+        (3): TransformerLayer(
+          (drop_path): Identity()
+          (input_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (self_attention): MultiheadAttention(
+            hidden_size=384, num_heads=12, is_cross_attention=False
+            (dropout): Dropout(p=0.1, inplace=False)
+            (query_key_value): Linear1D(in_features=384, out_features=1152, bias=True, parallel=col)
+            (dense): Linear1D(in_features=384, out_features=384, bias=True, parallel=row)
+          )
+          (post_attention_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (cross_attention): MultiheadAttention(
+            hidden_size=384, num_heads=12, is_cross_attention=True
+            (dropout): Dropout(p=0.1, inplace=False)
+            (query): Linear1D(in_features=384, out_features=384, bias=True, parallel=col)
+            (key_value): Linear1D(in_features=384, out_features=768, bias=True, parallel=col)
+            (dense): Linear1D(in_features=384, out_features=384, bias=True, parallel=row)
+          )
+          (post_cross_attention_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (mlp): MLP(
+            bias_gelu_fusion=True, bias_dropout_fusion=True, dropout=0.1
+            (dense_h_to_4h): Linear1D(in_features=384, out_features=1536, bias=True, parallel=col)
+            (dense_4h_to_h): Linear1D(in_features=1536, out_features=384, bias=True, parallel=row)
+          )
+        )
+        (4): TransformerLayer(
+          (drop_path): Identity()
+          (input_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (self_attention): MultiheadAttention(
+            hidden_size=384, num_heads=12, is_cross_attention=False
+            (dropout): Dropout(p=0.1, inplace=False)
+            (query_key_value): Linear1D(in_features=384, out_features=1152, bias=True, parallel=col)
+            (dense): Linear1D(in_features=384, out_features=384, bias=True, parallel=row)
+          )
+          (post_attention_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (cross_attention): MultiheadAttention(
+            hidden_size=384, num_heads=12, is_cross_attention=True
+            (dropout): Dropout(p=0.1, inplace=False)
+            (query): Linear1D(in_features=384, out_features=384, bias=True, parallel=col)
+            (key_value): Linear1D(in_features=384, out_features=768, bias=True, parallel=col)
+            (dense): Linear1D(in_features=384, out_features=384, bias=True, parallel=row)
+          )
+          (post_cross_attention_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (mlp): MLP(
+            bias_gelu_fusion=True, bias_dropout_fusion=True, dropout=0.1
+            (dense_h_to_4h): Linear1D(in_features=384, out_features=1536, bias=True, parallel=col)
+            (dense_4h_to_h): Linear1D(in_features=1536, out_features=384, bias=True, parallel=row)
+          )
+        )
+        (5): TransformerLayer(
+          (drop_path): Identity()
+          (input_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (self_attention): MultiheadAttention(
+            hidden_size=384, num_heads=12, is_cross_attention=False
+            (dropout): Dropout(p=0.1, inplace=False)
+            (query_key_value): Linear1D(in_features=384, out_features=1152, bias=True, parallel=col)
+            (dense): Linear1D(in_features=384, out_features=384, bias=True, parallel=row)
+          )
+          (post_attention_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (cross_attention): MultiheadAttention(
+            hidden_size=384, num_heads=12, is_cross_attention=True
+            (dropout): Dropout(p=0.1, inplace=False)
+            (query): Linear1D(in_features=384, out_features=384, bias=True, parallel=col)
+            (key_value): Linear1D(in_features=384, out_features=768, bias=True, parallel=col)
+            (dense): Linear1D(in_features=384, out_features=384, bias=True, parallel=row)
+          )
+          (post_cross_attention_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+          (mlp): MLP(
+            bias_gelu_fusion=True, bias_dropout_fusion=True, dropout=0.1
+            (dense_h_to_4h): Linear1D(in_features=384, out_features=1536, bias=True, parallel=col)
+            (dense_4h_to_h): Linear1D(in_features=1536, out_features=384, bias=True, parallel=row)
+          )
+        )
+      )
+      (final_layernorm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+    )
+    (lm_head): LMLogits()
+  )
+  (loss_func): T5Loss(
+    (lm_loss): ParallelCrossEntropyLoss()
+  )
+)
+[10/19 15:28:07] libai INFO: >>> done with building model. Building time: 1.581 seconds
+[10/19 15:28:07] lb.scheduler.lr_scheduler WARNING: warmup iters equals to zero, return CosineLR
+[10/19 15:28:07] lb.engine.trainer INFO: Starting training from iteration 0
+[10/19 15:28:07] lb.models.utils.graph_base INFO: Start compling the train graph which may take some time. Please wait for a moment ...
+[10/19 15:28:15] lb.utils.events INFO:  eta: 0:00:28  iteration: 19/1000  consumed_samples: 320  total_loss: 9.171  time: 0.0310 s/iter  data_time: 0.0022 s/iter total_throughput: 516.54 samples/s lr: 9.99e-05  
+[10/19 15:28:16] lb.utils.events INFO:  eta: 0:00:27  iteration: 39/1000  consumed_samples: 640  total_loss: 8.751  time: 0.0295 s/iter  data_time: 0.0024 s/iter total_throughput: 541.57 samples/s lr: 9.96e-05  
+[10/19 15:28:16] lb.utils.events INFO:  eta: 0:00:26  iteration: 59/1000  consumed_samples: 960  total_loss: 8.27  time: 0.0291 s/iter  data_time: 0.0023 s/iter total_throughput: 549.53 samples/s lr: 9.92e-05  
+[10/19 15:28:17] lb.utils.events INFO:  eta: 0:00:26  iteration: 79/1000  consumed_samples: 1280  total_loss: 7.906  time: 0.0289 s/iter  data_time: 0.0022 s/iter total_throughput: 552.81 samples/s lr: 9.85e-05  
+[10/19 15:28:17] lb.utils.checkpoint INFO: Saving checkpoint to ./output/t5_output/model_0000099
