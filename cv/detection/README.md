@@ -16,7 +16,7 @@ pip install -r requirement.txt
 | Faster-RCNN      | MobileNetV3_Large_320 | COCO |22.7 | [model](https://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/flowvision/detection/faster_rcnn/fasterrcnn_mobilenet_v3_large_320_fpn.tar.gz)|
 | Mask-RCNN      | ResNet50 | COCO |37.8 | [model](https://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/flowvision/detection/mask_rcnn/maskrcnn_resnet50_fpn_coco.tar.gz)|
 | RetinaNet     | ResNet50 | COCO |36.3 | [model](https://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/flowvision/detection/retinanet/retinanet_resnet50_fpn_coco.tar.gz)|
-
+| FCOS     | ResNet50 | COCO |38.8 | [model](http://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/fcos_resnet50_fpn/model.pth)|
 
 ## Run
 <details>
