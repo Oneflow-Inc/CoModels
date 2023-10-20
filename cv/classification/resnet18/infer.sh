@@ -11,5 +11,5 @@ python3 -m oneflow.distributed.launch \
         --master_port $PORT \
         main.py \
         --cfg configs/cnn_inference_settings.yaml \
-        --model_arch $MODEL_ARCH   
-        
+        --model_arch $MODEL_ARCH  
+

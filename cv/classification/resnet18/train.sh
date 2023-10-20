@@ -14,3 +14,5 @@ python3 -m oneflow.distributed.launch \
         --model_arch $MODEL_ARCH \
         --epochs 50 \
         --batch-size 32
+
+
