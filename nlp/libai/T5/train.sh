@@ -10,4 +10,3 @@ python3 -m oneflow.distributed.launch \
         --master_port 12345 \
         train_net.py \
         --config-file T5/t5_pretrain_config.py \
-
