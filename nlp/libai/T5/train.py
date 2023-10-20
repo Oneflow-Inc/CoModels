@@ -68,7 +68,7 @@ train = dict(
 
     # Save a model checkpoint after every this number of iterations,
     # and maximum number of checkpoint will be kept.
-    checkpointer=dict(period=2000, max_to_keep=100, save_model_after_n_epoch=None),
+    checkpointer=dict(period=1000, max_to_keep=100, save_model_after_n_epoch=None),
 
     # Options for evaluation
 
@@ -87,7 +87,7 @@ train = dict(
         evaluator=LazyCall(ClsEvaluator)(topk=(1, 5)),
         eval_period=5000,
         eval_after_n_epoch=None,
-        eval_iter=1e2,  # running steps for validation/test
+        eval_iter=1e3,  # running steps for validation/test
 
         # Metrics to be used for best model checkpoint.
         eval_metric="Acc@1",

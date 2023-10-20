@@ -53,7 +53,7 @@ def main(args):
             tokenizer = DefaultTrainer.build_tokenizer(cfg)
         model = DefaultTrainer.build_model(cfg)
         Checkpointer(model, save_dir=cfg.train.output_dir).resume_or_load(
-            cfg.train.load_weight, resume=args.resume
+             cfg.train.load_weight, resume=args.resume
         )
         if try_get_key(cfg, "graph.enabled", default=False):
             model = DefaultTrainer.build_graph(cfg, model, is_train=False)

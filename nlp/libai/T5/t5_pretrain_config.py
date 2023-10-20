@@ -31,10 +31,9 @@ cfg = dict(
 
 cfg = DictConfig(cfg)
 
-t5_model = LazyCall(T5Model)(cfg=cfg)
+#t5_model = LazyCall(T5Model)(cfg=cfg)
 
-pretrain_model = LazyCall(T5ForPreTraining)(cfg=cfg)
-model=pretrain_model
+model = LazyCall(T5ForPreTraining)(cfg=cfg)
 
 vocab_file ="/data/dataset/bert_data/bert-base-chinese-vocab.txt"
 data_prefix = "/data/dataset/bert_data/loss_compara_content_sentence"
