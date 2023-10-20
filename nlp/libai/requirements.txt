@@ -1,28 +1,5 @@
-boto3
-botocore
-cloudpickle
-flowvision==0.1.0
-wget
-hydra-core
-nltk
+click == 8.1.7
 numpy
-omegaconf==2.1.0
-Pygments
-PyYAML
-jieba
-regex
-requests
-scipy
-sentencepiece>=0.1
-tabulate
-termcolor
-tqdm
-pybind11
-portalocker
-dill
-flake8==3.8.1 
-isort==5.10.1
-black==21.4b2
-autoflake
-tensorboardX<=2.5.1
-pytest
+omegaconf == 2.1.0
+oneflow
+libai
