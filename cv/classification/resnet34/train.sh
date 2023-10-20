@@ -12,5 +12,3 @@ python3 -m oneflow.distributed.launch \
         main.py \
         --cfg configs/cnn_default_settings_resnet.yaml \
         --model_arch $MODEL_ARCH 
-
-        

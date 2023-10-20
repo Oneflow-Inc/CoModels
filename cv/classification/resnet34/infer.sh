@@ -13,5 +13,3 @@ python3 -m oneflow.distributed.launch \
         --cfg configs/cnn_default_settings_resnet.yaml \
         --model_arch $MODEL_ARCH \
         --throughput
-
-        
