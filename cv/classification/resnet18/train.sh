@@ -15,4 +15,3 @@ python3 -m oneflow.distributed.launch \
         --epochs 50 \
         --batch-size 32
 
-
