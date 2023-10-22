@@ -10,7 +10,7 @@ python3 -m oneflow.distributed.launch \
         --master_addr 127.0.0.1 \
         --master_port $PORT \
         main.py \
-        --cfg configs/cnn_default_settings_resnet.yaml \
+        --cfg configs/resnet_settings.yaml \
         --model_arch $MODEL_ARCH \
         --throughput
 
