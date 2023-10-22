@@ -13,4 +13,4 @@ python3 -m oneflow.distributed.launch \
         --cfg configs/resnet_settings.yaml \
         --model_arch $MODEL_ARCH 
 
-        
+  

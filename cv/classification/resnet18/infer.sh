@@ -14,4 +14,3 @@ python3 -m oneflow.distributed.launch \
         --model_arch $MODEL_ARCH \
         --throughput
 
-   
