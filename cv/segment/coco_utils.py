@@ -52,9 +52,7 @@ class ConvertCocoPolysToMask:
             # merge all instance masks into a single segmentation map
             # with its corresponding categories
             target = (masks * cats[:, None, None]).amax(dim=0).type(flow.int8)
-            masks = masks.type(flow.int8)
             target[(masks.sum(0) > 1)] = 255
-            target = target.type(flow.uint8)
         else:
             target = flow.zeros((h, w), dtype=flow.uint8)
 #        print("target shape:",np.unique(target.numpy()))
