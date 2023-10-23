@@ -15,9 +15,9 @@ from flowvision.loss.cross_entropy import (
     SoftTargetCrossEntropy,
 )
 from flowvision.utils.metrics import accuracy
+from flowvision.models import ModelCreator
 
 from config import get_config
-from models import build_model
 from data import build_loader
 from lr_scheduler import build_scheduler
 from optimizer import build_optimizer
@@ -31,6 +31,12 @@ from utils import (
     AverageMeter,
     TimeMeter
 )
+
+
+def build_model(config):
+    model_arch = config.MODEL.ARCH
+    model = ModelCreator.create_model(model_arch, pretrained=config.MODEL.PRETRAINED)
+    return model
 
 
 def parse_option():
