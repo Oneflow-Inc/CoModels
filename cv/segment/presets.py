@@ -80,3 +80,4 @@ class SegmentationPresetEval:
 
     def __call__(self, img, target):
         return self.transforms(img, target)
+        
