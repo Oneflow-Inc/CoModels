@@ -290,3 +290,4 @@ def reduce_across_processes(val):
     oneflow.comm.barrier()
     oneflow.comm.all_reduce(t)
     return t
+    
