@@ -101,4 +101,3 @@ class Normalize:
     def __call__(self, image, target):
         image = F.normalize(image, mean=self.mean, std=self.std)
         return image, target
-        
