@@ -105,4 +105,3 @@ def get_coco(root, image_set, transforms):
         dataset = _coco_remove_images_without_annotations(dataset, CAT_LIST)
 
     return dataset
-    
