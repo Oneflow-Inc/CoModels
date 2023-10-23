@@ -4,4 +4,3 @@ python train.py \
     --data-path /dataset/coco \
     --model fcn_resnet50_coco \
     --aux-loss
-    
