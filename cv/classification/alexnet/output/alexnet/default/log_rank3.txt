@@ -1,0 +1,152 @@
+[2023-10-24 13:48:51 alexnet] (main.py 451): INFO AMP_OPT_LEVEL: ''
+AUG:
+  AUTO_AUGMENT: rand-m9-mstd0.5-inc1
+  COLOR_JITTER: 0.4
+  CUTMIX: 0.0
+  CUTMIX_MINMAX: null
+  MIXUP: 0.0
+  MIXUP_MODE: batch
+  MIXUP_PROB: 1.0
+  MIXUP_SWITCH_PROB: 0.5
+  RECOUNT: 1
+  REMODE: pixel
+  REPROB: 0.25
+BASE:
+- ''
+DATA:
+  BATCH_SIZE: 32
+  CACHE_MODE: part
+  DATASET: imagenet
+  DATA_PATH: /data/dataset/ImageNet/extract
+  IMG_SIZE: 224
+  INTERPOLATION: bicubic
+  NUM_WORKERS: 8
+  PIN_MEMORY: true
+  SYNTHETIC_DATA: false
+  ZIP_MODE: false
+EVAL_MODE: true
+LOCAL_RANK: 0
+MODEL:
+  ARCH: alexnet
+  CHECKPOINTS: null
+  DROP_PATH_RATE: 0.1
+  DROP_RATE: 0.0
+  LABEL_SMOOTHING: 0.1
+  NUM_CLASSES: 1000
+  PRETRAINED: true
+  RESUME: ''
+OUTPUT: output/alexnet/default
+PRINT_FREQ: 50
+SAVE_FREQ: 1
+SEED: 42
+TAG: default
+TEST:
+  CROP: true
+  SEQUENTIAL: false
+THROUGHPUT_MODE: false
+TRAIN:
+  ACCUMULATION_STEPS: 0
+  AUTO_RESUME: false
+  BASE_LR: 0.01
+  CLIP_GRAD: 5.0
+  EPOCHS: 90
+  LR_SCHEDULER:
+    DECAY_EPOCHS: 30
+    DECAY_RATE: 0.1
+    MILESTONES:
+    - 150
+    - 225
+    NAME: step
+  MIN_LR: 1.25e-06
+  OPTIMIZER:
+    BETAS:
+    - 0.9
+    - 0.999
+    EPS: 1.0e-08
+    MOMENTUM: 0.9
+    NAME: sgd
+  START_EPOCH: 0
+  USE_CHECKPOINT: false
+  WARMUP_EPOCHS: 0
+  WARMUP_LR: 5.0e-07
+  WEIGHT_DECAY: 0.0001
+
+[2023-10-24 13:49:14 alexnet] (main.py 139): INFO Creating model:alexnet
+[2023-10-24 13:53:33 alexnet] (main.py 451): INFO AMP_OPT_LEVEL: ''
+AUG:
+  AUTO_AUGMENT: rand-m9-mstd0.5-inc1
+  COLOR_JITTER: 0.4
+  CUTMIX: 0.0
+  CUTMIX_MINMAX: null
+  MIXUP: 0.0
+  MIXUP_MODE: batch
+  MIXUP_PROB: 1.0
+  MIXUP_SWITCH_PROB: 0.5
+  RECOUNT: 1
+  REMODE: pixel
+  REPROB: 0.25
+BASE:
+- ''
+DATA:
+  BATCH_SIZE: 32
+  CACHE_MODE: part
+  DATASET: imagenet
+  DATA_PATH: /data/dataset/ImageNet/extract
+  IMG_SIZE: 224
+  INTERPOLATION: bicubic
+  NUM_WORKERS: 8
+  PIN_MEMORY: true
+  SYNTHETIC_DATA: false
+  ZIP_MODE: false
+EVAL_MODE: true
+LOCAL_RANK: 0
+MODEL:
+  ARCH: alexnet
+  CHECKPOINTS: null
+  DROP_PATH_RATE: 0.1
+  DROP_RATE: 0.0
+  LABEL_SMOOTHING: 0.1
+  NUM_CLASSES: 1000
+  PRETRAINED: true
+  RESUME: ''
+OUTPUT: output/alexnet/default
+PRINT_FREQ: 50
+SAVE_FREQ: 1
+SEED: 42
+TAG: default
+TEST:
+  CROP: true
+  SEQUENTIAL: false
+THROUGHPUT_MODE: false
+TRAIN:
+  ACCUMULATION_STEPS: 0
+  AUTO_RESUME: false
+  BASE_LR: 0.01
+  CLIP_GRAD: 5.0
+  EPOCHS: 90
+  LR_SCHEDULER:
+    DECAY_EPOCHS: 30
+    DECAY_RATE: 0.1
+    MILESTONES:
+    - 150
+    - 225
+    NAME: step
+  MIN_LR: 1.25e-06
+  OPTIMIZER:
+    BETAS:
+    - 0.9
+    - 0.999
+    EPS: 1.0e-08
+    MOMENTUM: 0.9
+    NAME: sgd
+  START_EPOCH: 0
+  USE_CHECKPOINT: false
+  WARMUP_EPOCHS: 0
+  WARMUP_LR: 5.0e-07
+  WEIGHT_DECAY: 0.0001
+
+[2023-10-24 13:53:39 alexnet] (main.py 139): INFO Creating model:alexnet
+[2023-10-24 13:53:43 alexnet] (main.py 149): INFO number of params: 61100840
+[2023-10-24 13:53:43 alexnet] (main.py 200): INFO Start training
+[2023-10-24 13:53:45 alexnet] (main.py 299): INFO Train: [0/90][0/10009]	eta 5:22:10	lr 0.010000	time 1.9313s (1.9313s)	rate 66.2773/s (66.2773/s)	loss 6.0016 (6.0016)	
+[2023-10-24 13:54:02 alexnet] (main.py 299): INFO Train: [0/90][50/10009]	eta 1:03:01	lr 0.010000	time 0.3487s (0.3797s)	rate 367.1211/s (337.1166/s)	loss 5.5565 (4.8417)	
