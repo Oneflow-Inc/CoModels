@@ -68,10 +68,10 @@ def parse_option():
         help="Use synthetic data",
     )
     parser.add_argument(
-        "--epochs", type=int, default=300, help="batch size for single GPU"
+        "--epochs", type=int, help="batch size for single GPU"
     )
     parser.add_argument(
-        "--batch-size", type=int, default=128, help="batch size for single GPU"
+        "--batch-size", type=int, help="batch size for single GPU"
     )
     parser.add_argument("--data-path", type=str, help="path to dataset")
     parser.add_argument(
@@ -149,7 +149,7 @@ def main(config):
     if hasattr(model_without_ddp, "flops"):
         flops = model_without_ddp.flops()
         logger.info(f"number of GFLOPs: {flops / 1e9}")
-
+    
     lr_scheduler = build_scheduler(config, optimizer, len(data_loader_train))
 
     if config.AUG.MIXUP > 0.0:
@@ -401,18 +401,21 @@ if __name__ == "__main__":
     np.random.seed(seed)
     cudnn.benchmark = True
 
-    linear_scaled_lr = (
-        config.TRAIN.BASE_LR
-        * config.DATA.BATCH_SIZE
-        * flow.env.get_world_size()
-        / 512.0
-    )
-    linear_scaled_warmup_lr = (
-        config.TRAIN.WARMUP_LR
-        * config.DATA.BATCH_SIZE
-        * flow.env.get_world_size()
-        / 512.0
-    )
+    # linear_scaled_lr = (
+    #     config.TRAIN.BASE_LR
+    #     * config.DATA.BATCH_SIZE
+    #     * flow.env.get_world_size()
+    #     / 512.0
+    # )
+    # linear_scaled_warmup_lr = (
+    #     config.TRAIN.WARMUP_LR
+    #     * config.DATA.BATCH_SIZE
+    #     * flow.env.get_world_size()
+    #     / 512.0
+    # )
+    linear_scaled_lr = config.TRAIN.BASE_LR
+    linear_scaled_warmup_lr = config.TRAIN.WARMUP_LR
+
     linear_scaled_min_lr = (
         config.TRAIN.MIN_LR * config.DATA.BATCH_SIZE * flow.env.get_world_size() / 512.0
     )

@@ -36,13 +36,13 @@ def build_scheduler(config, optimizer, n_iter_per_epoch):
             total_iters=num_steps,
         )
     elif config.TRAIN.LR_SCHEDULER.NAME == "step":
-        lr_scheduler = StepLRScheduler(
+        lr_scheduler = StepLR(
             optimizer,
             step_size=decay_steps,
             gamma=config.TRAIN.LR_SCHEDULER.DECAY_RATE,
         )
     elif config.TRAIN.LR_SCHEDULER.NAME == "multi_step":
-        lr_scheduler = MultiStepLRScheduler(
+        lr_scheduler = MultiStepLR(
             optimizer,
             milestones=decay_steps,
             gamma=config.TRAIN.LR_SCHEDULER.DECAY_RATE,
