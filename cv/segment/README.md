@@ -10,6 +10,7 @@ pip install -r requirement.txt
 | Architecture| Backbone |Dataset | mIOU |  Download  |
 |-------------|----------|--------|--------|--------------|
 | FCN      | ResNet50 | COCO |60.5 | [model](https://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/flowvision/segmentation/FCN/fcn_resnet50_coco.zip)|
+| FCN      | ResNet101 | COCO |63.7 | [model](https://oneflow-public.oss-cn-beijing.aliyuncs.com/model_zoo/flowvision/segmentation/FCN/fcn_resnet101_coco.zip)|
 
 
 ## Run
