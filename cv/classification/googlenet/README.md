@@ -31,8 +31,8 @@ For ImageNet dataset, you can download it from http://image-net.org/.
   ```
     .
     ├── configs -> ../configs
-    │   ├── googlenet_default_settings.yaml
-    │   └── googlenet_inference_settings.yaml
+    │   ├── ...
+    │   └── googlenet_default_settings.yaml
     ├── data -> ../data
     │   ├── __init__.py
     │   ├── build.py
@@ -56,7 +56,7 @@ You can use bash script `train.sh` to train this model.
 ```````
 sh train.sh
 ```````
-Then you will find an "AlexNet" file in the folder, which is the trained model parameters.
+
 
 ### Inference
 

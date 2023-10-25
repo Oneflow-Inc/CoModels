@@ -259,9 +259,6 @@ def train_one_epoch(
             samples, targets = mixup_fn(samples, targets)
 
         outputs = model(samples)
-        if type(outputs) == tuple:
-            outputs = outputs[0]
-
 
         if config.TRAIN.ACCUMULATION_STEPS > 1:
             loss = criterion(outputs, targets)
@@ -329,8 +326,6 @@ def validate(config, data_loader, model):
 
         # compute output
         output = model(images)
-        if type(output) == tuple:
-            output = output[0]
 
         # measure accuracy and record loss
         loss = criterion(output, target)
