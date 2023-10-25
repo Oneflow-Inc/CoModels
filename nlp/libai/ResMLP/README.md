@@ -1,5 +1,5 @@
 ## Getting Started
-### Prepare the Data and the Vocab
+### Prepare the Data 
 
 - Prepared relevant datasets:
 
