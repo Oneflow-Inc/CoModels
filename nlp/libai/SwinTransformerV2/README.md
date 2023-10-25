@@ -10,7 +10,7 @@
 $ tree data
 path/to/imagenet
 ```
-### How to Train SwinTransformer Model with Parallelism
+### How to Train SwinTransformerV2 Model with Parallelism
 
 <details>
 <summary>Training code</summary>
