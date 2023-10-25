@@ -12,6 +12,23 @@ from flowvision.loss.cross_entropy import SoftTargetCrossEntropy
 dataloader.train.dataset[0].root = "/data/dataset/ImageNet/extract"
 dataloader.test[0].dataset.root = "/data/dataset/ImageNet/extract"
 
+cfg = dict(
+    img_size=224,
+    patch_size=16,
+    in_chans=3,
+    embed_dim=768,
+    depth=12,
+    num_heads=12,
+    mlp_ratio=4.0,
+    drop_rate=0.0,
+    attn_drop_rate=0.0,
+    drop_path_rate=0.0,
+    num_classes=1000,
+    loss_func=None,
+)
+model = LazyCall(VisionTransformer)(cfg=cfg)
+
+
 # Refine model cfg for vit training on imagenet
 model.cfg.num_classes = 1000
 model.cfg.loss_func = SoftTargetCrossEntropy()
@@ -34,21 +51,6 @@ optim.params.clip_grad_max_norm = None
 optim.params.clip_grad_norm_type = None
 optim.params.overrides = {"pos_embed": {"weight_decay": 0.0}, "cls_token": {"weight_decay": 0.0}}
 
-cfg = dict(
-    img_size=224,
-    patch_size=16,
-    in_chans=3,
-    embed_dim=768,
-    depth=12,
-    num_heads=12,
-    mlp_ratio=4.0,
-    drop_rate=0.0,
-    attn_drop_rate=0.0,
-    drop_path_rate=0.0,
-    num_classes=1000,
-    loss_func=None,
-)
-model = LazyCall(VisionTransformer)(cfg=cfg)
 
 # Refine train cfg for vit model
 train.train_micro_batch_size = 128
