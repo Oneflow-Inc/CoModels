@@ -19,7 +19,6 @@ path/to/roberta_data
 ```
 ### How to Train RoBERTa Model with Parallelism
 
-We provide `train.sh` for execute training. Before invoking the script, perform the following steps.
 <details>
 <summary>Training code</summary>
 
