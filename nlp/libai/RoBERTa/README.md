@@ -17,7 +17,7 @@ path/to/roberta_data
 ├── loss_compara_content_sentence.bin
 └── loss_compara_content_sentence.idx
 ```
-### How to Train T5 Model with Parallelism
+### How to Train RoBERTa Model with Parallelism
 
 We provide `train.sh` for execute training. Before invoking the script, perform the following steps.
 <details>
