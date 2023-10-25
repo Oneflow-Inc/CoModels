@@ -31,7 +31,7 @@ from utils import (
     AverageMeter,
     TimeMeter
 )
-
+import flowvision
 
 def build_model(config):
     model_arch = config.MODEL.ARCH
@@ -136,7 +136,7 @@ def main(config):
     ) = build_loader(config)
 
     logger.info(f"Creating model:{config.MODEL.ARCH}")
-    model = build_model(config)
+    model = flowvision.models.googlenet(pretrained=False, progress=True)
     model.cuda()
 
     optimizer = build_optimizer(config, model)
@@ -210,7 +210,7 @@ def main(config):
             optimizer,
             epoch,
             mixup_fn,
-            lr_scheduler,
+            lr_scheduler
         )
         if flow.env.get_rank() == 0 and (
             epoch % config.SAVE_FREQ == 0 or epoch == (config.TRAIN.EPOCHS - 1)
@@ -327,9 +327,10 @@ def validate(config, data_loader, model):
         target = target.cuda()
 
         # compute output
-        output = model(images)
+        output = model.forward(images)
         if type(output) == tuple:
             output = output[0]
+
 
         # measure accuracy and record loss
         loss = criterion(output, target)
@@ -374,13 +375,13 @@ def throughput(data_loader, model, logger):
         images = images.cuda()
         batch_size = images.shape[0]
         for i in range(50):
-            model(images)
+            model.forward(images)
         flow.cuda.synchronize()
         # TODO: add flow.cuda.synchronize()
         logger.info(f"throughput averaged with 30 times")
         tic1 = time.time()
         for i in range(30):
-            model(images)
+            model.forward(images)
 
         flow.cuda.synchronize()
         tic2 = time.time()
