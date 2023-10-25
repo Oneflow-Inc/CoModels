@@ -69,6 +69,7 @@ def parse_option():
     parser.add_argument(
         "--epochs", type=int, help="batch size for single GPU"
     )
+    parser.add_argument("--lr", type=float, help="initial learning rate")
     parser.add_argument(
         "--batch-size", type=int, help="batch size for single GPU"
     )
