@@ -10,5 +10,6 @@ python3 -m oneflow.distributed.launch \
         --master_addr 127.0.0.1 \
         --master_port $PORT \
         main.py \
-        --cfg configs/inception_v3_inference_settings.yaml \
-        --model_arch $MODEL_ARCH
+        --cfg configs/inception_v3_default_settings.yaml \
+        --model_arch $MODEL_ARCH \
+        --throughput
