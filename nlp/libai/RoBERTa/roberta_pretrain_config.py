@@ -2,13 +2,13 @@ from libai.config import LazyCall
 from libai.evaluation import PPLEvaluator
 from libai.models import RobertaForPreTraining
 from omegaconf import DictConfig
-from ..graph import graph
-from ..train import train
-from ..optim import optim
+from .graph import graph
+from .train import train
+from .optim import optim
 from .roberta_dataset import dataloader, tokenization
 
-vocab_file = "/data/dataset/roberta_data/vocab.json"
-merge_files = "/data/dataset/roberta_data/merges.txt"
+vocab_file = "/data/dataset/roberta_data/roberta-vocab.json"
+merge_files = "/data/dataset/roberta_data/roberta-merges.txt"
 data_prefix = "/data/dataset/roberta_data/loss_compara_content_sentence"
 
 tokenization.tokenizer.vocab_file = vocab_file
