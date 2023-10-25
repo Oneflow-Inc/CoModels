@@ -14,7 +14,6 @@ path/to/imagenet
 
 <details>
 <summary>Training code</summary>
-We take the ResMLP as an example to show how to train the model.
 
 ```Shell
 bash train.sh
@@ -22,7 +21,6 @@ bash train.sh
 </details>
 <details>
 <summary>Inference code</summary>
-We take the ResMLP as an example to show how to test the model.
 
 ```Shell
 bash infer.sh
