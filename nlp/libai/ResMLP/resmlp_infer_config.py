@@ -6,4 +6,4 @@ from flowvision.data import Mixup
 from flowvision.loss.cross_entropy import SoftTargetCrossEntropy
 
 
-train.load_weight = "./output_resmlp/model_0000099"
+train.load_weight = "./output_resmlp/model_0000199"

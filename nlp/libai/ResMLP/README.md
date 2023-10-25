@@ -3,7 +3,7 @@
 
 - Prepared relevant datasets:
 
-1. [IMAGRNET_URL]
+1. IMAGRNET
 
 - Download the dataset and move the data file to the folder. The file structure should be like:
 ```bash
@@ -12,7 +12,6 @@ path/to/imagenet
 ```
 ### How to Train ResMLP Model with Parallelism
 
-We provide `train.sh` for execute training. Before invoking the script, perform the following steps.
 <details>
 <summary>Training code</summary>
 We take the ResMLP as an example to show how to train the model.
