@@ -93,7 +93,7 @@ train.test_micro_batch_size = 64
 train.train_epoch = 1
 train.warmup_ratio = 5 / 400
 train.evaluation.eval_period = 1000
-train.log_period = 1
+train.log_period = 20
 
 # Scheduler
 train.scheduler.warmup_factor = 0.001
