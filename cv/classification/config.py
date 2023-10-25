@@ -186,6 +186,8 @@ def update_config(config, args):
         config.MODEL.ARCH = args.model_arch
     if args.epochs:
         config.TRAIN.EPOCHS = args.epochs
+    if args.lr:
+        config.TRAIN.BASE_LR = args.lr
     if args.batch_size:
         config.DATA.BATCH_SIZE = args.batch_size
     if args.synthetic_data:
