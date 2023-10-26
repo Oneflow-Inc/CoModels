@@ -1,1 +1,6 @@
-../requirements.txt
+numpy==1.21.6
+Pillow==9.5.0
+PyYAML==6.0.1
+termcolor==1.1.0
+yacs==0.1.8
+opencv-python==4.4.0.46

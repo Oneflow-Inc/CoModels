@@ -1,1 +1,5 @@
-../requirements.txt
+click == 8.1.7
+numpy
+omegaconf == 2.1.0
+oneflow
+libai
