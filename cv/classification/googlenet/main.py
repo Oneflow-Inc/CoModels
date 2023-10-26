@@ -137,7 +137,7 @@ def main(config):
     ) = build_loader(config)
 
     logger.info(f"Creating model:{config.MODEL.ARCH}")
-    model = flowvision.models.googlenet(pretrained=False, progress=True, num_classes=config.DATA.NUM_CLASSES)
+    model = flowvision.models.googlenet(pretrained=config.MODEL.PRETRAINED, progress=True, num_classes=config.DATA.NUM_CLASSES)
     model.cuda()
 
     optimizer = build_optimizer(config, model)

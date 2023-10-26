@@ -10,6 +10,6 @@ python3 -m oneflow.distributed.launch \
         --master_addr 127.0.0.1 \
         --master_port $PORT \
         main.py \
-        --cfg configs/googlenet_default_settings.yaml \
+        --cfg configs/default_settings.yaml \
         --model_arch $MODEL_ARCH \
         --throughput
