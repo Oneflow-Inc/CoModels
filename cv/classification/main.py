@@ -72,6 +72,9 @@ def parse_option():
     )
     parser.add_argument("--lr", type=float, help="initial learning rate")
     parser.add_argument(
+        "--image-size", type=int, help="initial image size"
+    )
+    parser.add_argument(
         "--batch-size", type=int, help="batch size for single GPU"
     )
     parser.add_argument("--data-path", type=str, help="path to dataset")
@@ -150,7 +153,7 @@ def main(config):
     if hasattr(model_without_ddp, "flops"):
         flops = model_without_ddp.flops()
         logger.info(f"number of GFLOPs: {flops / 1e9}")
-    
+
     lr_scheduler = build_scheduler(config, optimizer, len(data_loader_train))
 
     if config.AUG.MIXUP > 0.0:
@@ -188,7 +191,7 @@ def main(config):
         )
         if config.EVAL_MODE:
             return
-    
+
     if config.THROUGHPUT_MODE:
         acc1, acc5, loss = validate(config, data_loader_val, model)
         logger.info(
