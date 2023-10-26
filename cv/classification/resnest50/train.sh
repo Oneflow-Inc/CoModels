@@ -13,4 +13,4 @@ python3 -m oneflow.distributed.launch \
         main.py \
         --cfg configs/resnest_default_settings.yaml \
         --model_arch $MODEL_ARCH \
-        --image_size $IMAGE_SIZE
+        --image-size $IMAGE_SIZE
