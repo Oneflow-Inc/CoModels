@@ -1,7 +1,7 @@
 export PYTHONPATH=$PWD:$PYTHONPATH
 set -aux
 
-GPU_NUMS=2
+GPU_NUMS=4
 PORT=12379
 MODEL_ARCH="googlenet"
 
