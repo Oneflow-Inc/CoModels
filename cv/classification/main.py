@@ -31,7 +31,7 @@ from utils import (
     AverageMeter,
     TimeMeter
 )
-from torch.utils.tensorboard import SummaryWriter
+
 
 def build_model(config):
     model_arch = config.MODEL.ARCH
@@ -71,9 +71,11 @@ def parse_option():
         "--epochs", type=int, help="batch size for single GPU"
     )
     parser.add_argument("--lr", type=float, help="initial learning rate")
-    parser.add_argument("--image_size", type=int, help="initial image size")
     parser.add_argument(
-        "--batch_size", type=int, help="batch size for single GPU"
+        "--image-size", type=int, help="initial image size"
+    )
+    parser.add_argument(
+        "--batch-size", type=int, help="batch size for single GPU"
     )
     parser.add_argument("--data-path", type=str, help="path to dataset")
     parser.add_argument(
@@ -140,13 +142,6 @@ def main(config):
     logger.info(f"Creating model:{config.MODEL.ARCH}")
     model = build_model(config)
     model.cuda()
-
-    #use tensorboard
-    LOG = os.path.join(config.OUTPUT,"log")
-    if not os.path.exists(LOG):
-        os.makedirs(LOG)
-    writer = SummaryWriter(log_dir=os.path.join(
-            LOG,datetime.datetime.now().strftime('%A_%d_%B_%Y_%Hh_%Mm_%Ss')))
 
     optimizer = build_optimizer(config, model)
     model = flow.nn.parallel.DistributedDataParallel(model, broadcast_buffers=False)
@@ -220,7 +215,6 @@ def main(config):
             epoch,
             mixup_fn,
             lr_scheduler,
-            writer
         )
         if flow.env.get_rank() == 0 and (
             epoch % config.SAVE_FREQ == 0 or epoch == (config.TRAIN.EPOCHS - 1)
@@ -246,11 +240,10 @@ def main(config):
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     logger.info("Training time {}".format(total_time_str))
-    writer.close()
 
 
 def train_one_epoch(
-    config, model, criterion, data_loader, optimizer, epoch, mixup_fn, lr_scheduler, writer
+    config, model, criterion, data_loader, optimizer, epoch, mixup_fn, lr_scheduler
 ):
     model.train()
     optimizer.zero_grad()
@@ -295,11 +288,8 @@ def train_one_epoch(
 
         one_sample_time.record(samples.size(0) * flow.env.get_world_size())
         loss_meter.record(loss.cpu().detach(), targets.size(0))
-
+        
         end = time.time()
-        #update training loss for each iteration
-        n_iter = epoch* len(data_loader) + idx +1
-        writer.add_scalar('Train/loss', loss.item(), n_iter)
 
         if idx % config.PRINT_FREQ == 0:
             lr = optimizer.param_groups[0]["lr"]
