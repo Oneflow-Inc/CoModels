@@ -7,3 +7,4 @@
     --lr 0.12 \
     --pretrained \
     --test-only
+    
