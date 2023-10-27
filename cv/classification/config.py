@@ -190,6 +190,8 @@ def update_config(config, args):
         config.TRAIN.BASE_LR = args.lr
     if args.batch_size:
         config.DATA.BATCH_SIZE = args.batch_size
+    if args.image_size:
+        config.DATA.IMG_SIZE = args.image_size
     if args.synthetic_data:
         config.DATA.SYNTHETIC_DATA = args.synthetic_data
     else:
