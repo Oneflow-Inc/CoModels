@@ -34,7 +34,8 @@ _C.DATA.CACHE_MODE = "part"
 _C.DATA.PIN_MEMORY = True
 # Number of data loading threads
 _C.DATA.NUM_WORKERS = 8
-
+# Number of data classes
+_C.DATA.NUM_CLASSES = 1000
 # -----------------------------------------------------------------------------
 # Model settings
 # -----------------------------------------------------------------------------
