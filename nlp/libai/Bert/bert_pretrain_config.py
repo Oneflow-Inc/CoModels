@@ -2,9 +2,9 @@ from omegaconf import DictConfig
 from libai.models import BertForPreTraining
 from libai.config import LazyCall
 from libai.evaluation import PPLEvaluator
-from ..graph import graph
-from ..train import train
-from ..optim import optim
+from .graph import graph
+from .train import train
+from .optim import optim
 from .bert_dataset import dataloader, tokenization
 
 vocab_file = "/data/dataset/bert_data/bert-base-chinese-vocab.txt"
