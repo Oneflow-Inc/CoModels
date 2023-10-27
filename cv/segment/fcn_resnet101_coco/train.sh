@@ -1,5 +1,5 @@
 python train.py \
-    -b 24 \
+    -b 4 \
     --dataset coco \
     --data-path /dataset/coco \
     --model fcn_resnet101_coco \
