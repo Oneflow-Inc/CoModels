@@ -9,6 +9,6 @@ python3 -m oneflow.distributed.launch \
         --master_addr 127.0.0.1\
         --master_port 12345 \
         train_net.py \
-        --config-file Bert/bert_infer_config.py \
+        --config-file bert_infer_config.py \
 	--eval-only 
 

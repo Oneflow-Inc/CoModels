@@ -1,9 +1,9 @@
 from libai.config import LazyCall
 from libai.evaluation import PPLEvaluator
-from ..train import train
-from ..optim import optim
+from .train import train
+from .optim import optim
 from .gpt_dataset import dataloader, tokenization
-from ..graph import graph
+from .graph import graph
 from omegaconf import DictConfig
 
 from libai.models import GPTForPreTraining
