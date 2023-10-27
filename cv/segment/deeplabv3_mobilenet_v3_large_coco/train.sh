@@ -4,3 +4,4 @@ python train.py \
     --data-path /dataset/coco \
     --model deeplabv3_mobilenet_v3_large_coco \
     --aux-loss
+    
