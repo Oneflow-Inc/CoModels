@@ -57,6 +57,7 @@ def main():
     args = arg_parser.parse_args()
 
     stylize(args)
+    
 
 
 if __name__ == "__main__":
