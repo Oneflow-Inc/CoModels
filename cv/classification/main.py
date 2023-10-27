@@ -288,7 +288,7 @@ def train_one_epoch(
 
         one_sample_time.record(samples.size(0) * flow.env.get_world_size())
         loss_meter.record(loss.cpu().detach(), targets.size(0))
-
+        
         end = time.time()
 
         if idx % config.PRINT_FREQ == 0:
