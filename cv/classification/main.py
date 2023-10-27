@@ -72,6 +72,9 @@ def parse_option():
     )
     parser.add_argument("--lr", type=float, help="initial learning rate")
     parser.add_argument(
+        "--image-size", type=int, help="initial image size"
+    )
+    parser.add_argument(
         "--batch-size", type=int, help="batch size for single GPU"
     )
     parser.add_argument("--data-path", type=str, help="path to dataset")
