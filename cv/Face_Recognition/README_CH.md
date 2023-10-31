@@ -83,114 +83,8 @@ python3 -m pip install oneflow -f https://oneflow-staging.oss-cn-beijing.aliyunc
 
 [InsightFace 原仓库](https://github.com/deepinsight/insightface)中提供了一系列人脸识别任务相关的数据集，已经完成了人脸对齐等预处理过程。请从[这里](https://github.com/deepinsight/insightface/wiki/Dataset-Zoo)下载相应的数据集，并且转换成 OneFlow 可以识别的 OFRecord 格式。考虑到步骤繁琐，也可以直接下载已经转好的 OFRecord 数据集：
 
-[ MS1M-ArcFace(face_emore)](http://oneflow-public.oss-cn-beijing.aliyuncs.com/face_dataset/train_ofrecord.tar.gz)
 
 [MS1MV3](https://oneflow-public.oss-cn-beijing.aliyuncs.com/facedata/MS1V3/oneflow/ms1m-retinaface-t1.zip)
-
-下面以数据集 MS1M-ArcFace 为例，展示如何将下载到的数据集转换成 OFRecord 格式。
-
-#### 1. 下载数据集
-
-下载好的 MS1M-ArcFace 数据集，内容如下：
-
-```
-faces_emore/
-       train.idx
-       train.rec
-       property
-       lfw.bin
-       cfp_fp.bin
-       agedb_30.bin
-```
-
-
-
-前三个文件是训练数据集 MS1M 的 MXNet 的 recordio 格式相关的文件，后三个 `.bin` 文件是三个不同的验证数据集。
-
-
-
-#### 2. 将训练数据集 MS1M 从 recordio 格式转换为 OFRecord 格式
-训练数据集转换有两种方式: (2.1部分)直接使用python脚本生成n个shuffle过的数据part，或(2.2部分)python脚本生成一个part，再根据需要用spark做shuffle和partition。
-2.1 直接使用 Python 脚本
-
-运行： 
-```
-python tools/dataset_convert/mx_recordio_2_ofrecord_shuffled_npart.py  --data_dir datasets/faces_emore --output_filepath faces_emore/ofrecord/train --num_part 16
-```
-成功后将得到 `num_part` 数量个 OFRecord，本示例中为 16 个，显示如下：
-
-```
-tree ofrecord/test/
-ofrecord/test/
-|-- _SUCCESS
-|-- part-00000
-|-- part-00001
-|-- part-00002
-|-- part-00003
-|-- part-00004
-|-- part-00005
-|-- part-00006
-|-- part-00007
-|-- part-00008
-|-- part-00009
-|-- part-00010
-|-- part-00011
-|-- part-00012
-|-- part-00013
-|-- part-00014
-`-- part-00015
-
-0 directories, 17 files
-```
-2.2 Python 脚本 + Spark Shuffle + Spark Partition
-
-运行：
-
-```
-python tools/dataset_convert/mx_recordio_2_ofrecord.py --data_dir datasets/faces_emore --output_filepath faces_emore/ofrecord/train
-```
-成功后将得到一个包含所有数据的 OFReocrd（`part-0`），需要进一步使用 Spark 进行 Shuffle 和 Partition。
-成功安装和部署 Spark 后， 您需要：
-1. 下载工具 jar 包
-   
-
-您可以通过 [Github](https://github.com/Oneflow-Inc/spark-oneflow-connector) 或者 [OSS](https://oneflow-public.oss-cn-beijing.aliyuncs.com/spark-oneflow-connector/spark-oneflow-connector-assembly-0.1.1.jar) 下载 Spark-oneflow-connector-assembly-0.1.0.jar 文件。
-1. 运行 Spark 命令
-
-
-运行
-```
-//Start Spark 
-./Spark-2.4.3-bin-hadoop2.7/bin/Spark-shell --jars ~/Spark-oneflow-connector-assembly-0.1.0.jar --driver-memory=64G --conf Spark.local.dir=/tmp/
-// shuffle and partition in 16 parts
-import org.oneflow.Spark.functions._
-Spark.read.chunk("data_path").shuffle().repartition(16).write.chunk("new_data_path")
-sc.formatFilenameAsOneflowStyle("new_data_path")
-```
-然后就可以得到 16 个 part 的 OFRecord，显示如下
-```
-tree ofrecord/test/
-ofrecord/test/
-|-- _SUCCESS
-|-- part-00000
-|-- part-00001
-|-- part-00002
-|-- part-00003
-|-- part-00004
-|-- part-00005
-|-- part-00006
-|-- part-00007
-|-- part-00008
-|-- part-00009
-|-- part-00010
-|-- part-00011
-|-- part-00012
-|-- part-00013
-|-- part-00014
-`-- part-00015
-
-0 directories, 17 files
-```
 
 
 
@@ -206,11 +100,7 @@ ofrecord/test/
 
 #### eager 
 ```
-./train_ddp.sh
-```
-#### Graph
-```
-train_graph_distributed.sh
+bash train.sh
 ```
 
 ### 验证
@@ -220,7 +110,7 @@ train_graph_distributed.sh
 运行
 
 ```
-./val.sh
+bash val.sh
 ```
 
 ## OneFLow2ONNX
