@@ -117,119 +117,10 @@ According to [Load and Prepare OFRecord Datasets](https://docs.oneflow.org/en/ex
 
 It has provided a set of datasets related to face recognition tasks, which have been pre-processed via face alignment or other processions already in [InsightFace](https://github.com/deepinsight/insightface). The corresponding datasets could be downloaded from [here](https://github.com/deepinsight/insightface/wiki/Dataset-Zoo) and should be converted into OFRecord, which performs better in OneFlow. Considering the cumbersome steps, it is suggested to download converted OFrecord datasets:
 
-[MS1M-ArcFace(face_emore)](http://oneflow-public.oss-cn-beijing.aliyuncs.com/face_dataset/train_ofrecord.tar.gz)
 
 [MS1MV3](https://oneflow-public.oss-cn-beijing.aliyuncs.com/facedata/MS1V3/oneflow/ms1m-retinaface-t1.zip)
 
-It illustrates how to convert downloaded datasets into OFRecords, and take MS1M-ArcFace as an example in the following.
 
-#### 1. Download datasets
-
-The structure of the downloaded MS1M-ArcFace is shown as follown：
-
-
-
-```
-faces_emore/
-
-​    train.idx
-
-​    train.rec
-
-​    property
-
-​    lfw.bin
-
-​    cfp_fp.bin
-
-​    agedb_30.bin
-```
-
-The first three files are MXNet recordio format files of MS1M training dataset, the last three `.bin` files are different validation datasets.
-
-
-
-#### 2. Transformation from MS1M recordio to OFRecord
-Only need to execute 2.1 or 2.2
-2.1 Use Python scripts directly
-
-Run 
-```
-python tools/mx_recordio_2_ofrecord_shuffled_npart.py  --data_dir datasets/faces_emore --output_filepath faces_emore/ofrecord/train --num_part 16
-```
-And you will get the number of `part_num` parts of OFRecord, it's 16 parts in this example, it showed like this
-```
-tree ofrecord/test/
-ofrecord/test/
-|-- _SUCCESS
-|-- part-00000
-|-- part-00001
-|-- part-00002
-|-- part-00003
-|-- part-00004
-|-- part-00005
-|-- part-00006
-|-- part-00007
-|-- part-00008
-|-- part-00009
-|-- part-00010
-|-- part-00011
-|-- part-00012
-|-- part-00013
-|-- part-00014
-`-- part-00015
-
-0 directories, 17 files
-```
-
-
-2.2 Use Python scripts + Spark Shuffle + Spark partition
-
-Run
-
-```
-python tools/dataset_convert/mx_recordio_2_ofrecord.py --data_dir datasets/faces_emore --output_filepath faces_emore/ofrecord/train
-```
-
-And you will get one part of OFRecord(`part-0`) with all data in this way. Then you should use Spark to shuffle and partition.
-1. Get jar package available
-You can download Spark-oneflow-connector-assembly-0.1.0.jar via [Github](https://github.com/Oneflow-Inc/spark-oneflow-connector) or [OSS](https://oneflow-public.oss-cn-beijing.aliyuncs.com/spark-oneflow-connector/spark-oneflow-connector-assembly-0.1.1.jar)
-
-2. Run in Spark
-Assign that you have already installed and configured Spark.
-Run
-```
-//Start Spark 
-./Spark-2.4.3-bin-hadoop2.7/bin/Spark-shell --jars ~/Spark-oneflow-connector-assembly-0.1.0.jar --driver-memory=64G --conf Spark.local.dir=/tmp/
-// shuffle and partition in 16 parts
-import org.oneflow.Spark.functions._
-Spark.read.chunk("data_path").shuffle().repartition(16).write.chunk("new_data_path")
-sc.formatFilenameAsOneflowStyle("new_data_path")
-```
-Hence you will get 16 parts of OFRecords, it shown like this
-```
-tree ofrecord/test/
-ofrecord/test/
-|-- _SUCCESS
-|-- part-00000
-|-- part-00001
-|-- part-00002
-|-- part-00003
-|-- part-00004
-|-- part-00005
-|-- part-00006
-|-- part-00007
-|-- part-00008
-|-- part-00009
-|-- part-00010
-|-- part-00011
-|-- part-00012
-|-- part-00013
-|-- part-00014
-`-- part-00015
-
-0 directories, 17 files
-```
 
 
 ## Training and verification
@@ -242,7 +133,7 @@ To reduce the usage cost of user, OneFlow draws close the scripts to Torch style
 
 #### eager 
 ```
-./train.sh
+bash train.sh
 ```
 
 
@@ -251,8 +142,7 @@ To reduce the usage cost of user, OneFlow draws close the scripts to Torch style
 Moreover, OneFlow offers a validation script to do verification separately, val.py, which facilitates you to check the precision of the pre-training model saved.
 
 ```
-./val.sh
-
+bash val.sh
 ```
 ## OneFLow2ONNX
 
