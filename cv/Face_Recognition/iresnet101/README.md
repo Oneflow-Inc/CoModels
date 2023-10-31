@@ -25,7 +25,6 @@ It introduces how to train InsightFace in OneFlow, and do verification over the 
 
    \- [1. Download datasets](#1-download-datasets)
 
-   \- [2. Transformation from MS1M recordio to OFRecord](#2-transformation-from-ms1m-recordio-to-ofrecord)
 
  \- [Training and verification](#training-and-verification)
 
