@@ -1,4 +1,4 @@
-## ResNeSt-101
+## SE-ResNet101
 
 ### Installation
 - Install the latest version of OneFlow
@@ -32,7 +32,7 @@ For ImageNet dataset, you can download it from http://image-net.org/.
     .
     ├── configs -> ../configs
     │   ├── ...
-    │   └── resnest_default_settings.yaml
+    │   └── senet_default_settings.yaml
     ├── data -> ../data
     │   ├── __init__.py
     │   ├── build.py
