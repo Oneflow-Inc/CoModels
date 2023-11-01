@@ -1,4 +1,4 @@
-## VGG13
+## GENet
 
 ### Installation
 - Install the latest version of OneFlow
