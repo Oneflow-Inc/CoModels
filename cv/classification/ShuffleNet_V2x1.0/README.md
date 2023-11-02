@@ -24,12 +24,12 @@ conda activate oneflow
 
 - Install the latest version of OneFlow
 ```bash
-python3 -m pip install oneflow -f https://staging.oneflow.info/branch/master/cu102
+python3 -m pip install --pre oneflow -f https://oneflow-staging.oss-cn-beijing.aliyuncs.com/branch/master/[PLATFORM]
 ```
 
 - Install other requirements
 ```bash
-pip install opencv-python==4.4.0.46 termcolor==1.1.0 yacs==0.1.8
+pip install -r requirements.txt
 ```
 
 
