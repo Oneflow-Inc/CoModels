@@ -1,0 +1,76 @@
+[2023-11-02 09:48:48 mobile_small] (main.py 451): INFO Full config saved to output/mobile_small/default/config.json
+[2023-11-02 09:48:48 mobile_small] (main.py 454): INFO AMP_OPT_LEVEL: ''
+AUG:
+  AUTO_AUGMENT: rand-m9-mstd0.5-inc1
+  COLOR_JITTER: 0.4
+  CUTMIX: 0.0
+  CUTMIX_MINMAX: null
+  MIXUP: 0.0
+  MIXUP_MODE: batch
+  MIXUP_PROB: 1.0
+  MIXUP_SWITCH_PROB: 0.5
+  RECOUNT: 1
+  REMODE: pixel
+  REPROB: 0.25
+BASE:
+- ''
+DATA:
+  BATCH_SIZE: 32
+  CACHE_MODE: part
+  DATASET: imagenet
+  DATA_PATH: /data/dataset/ImageNet/extract
+  IMG_SIZE: 224
+  INTERPOLATION: bicubic
+  NUM_CLASSES: 1000
+  NUM_WORKERS: 8
+  PIN_MEMORY: true
+  SYNTHETIC_DATA: false
+  ZIP_MODE: false
+EVAL_MODE: true
+LOCAL_RANK: 0
+MODEL:
+  ARCH: mobile_small
+  CHECKPOINTS: null
+  DROP_PATH_RATE: 0.1
+  DROP_RATE: 0.0
+  LABEL_SMOOTHING: 0.1
+  NUM_CLASSES: 1000
+  PRETRAINED: true
+  RESUME: ''
+OUTPUT: output/mobile_small/default
+PRINT_FREQ: 50
+SAVE_FREQ: 1
+SEED: 42
+TAG: default
+TEST:
+  CROP: true
+  SEQUENTIAL: false
+THROUGHPUT_MODE: true
+TRAIN:
+  ACCUMULATION_STEPS: 0
+  AUTO_RESUME: false
+  BASE_LR: 0.01
+  CLIP_GRAD: 5.0
+  EPOCHS: 90
+  LR_SCHEDULER:
+    DECAY_EPOCHS: 30
+    DECAY_RATE: 0.1
+    MILESTONES:
+    - 150
+    - 225
+    NAME: step
+  MIN_LR: 3.125e-07
+  OPTIMIZER:
+    BETAS:
+    - 0.9
+    - 0.999
+    EPS: 1.0e-08
+    MOMENTUM: 0.9
+    NAME: sgd
+  START_EPOCH: 0
+  USE_CHECKPOINT: false
+  WARMUP_EPOCHS: 0
+  WARMUP_LR: 5.0e-07
+  WEIGHT_DECAY: 0.0001
+
+[2023-11-02 09:48:53 mobile_small] (main.py 142): INFO Creating model:mobile_small
