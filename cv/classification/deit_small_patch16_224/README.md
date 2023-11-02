@@ -1,7 +1,4 @@
-## MobileNet
-MobileNet is a convolutional neural network (CNN) architecture that is optimized for mobile devices and embedded vision applications. Introduced by Google researchers in 2017, MobileNet primarily uses lightweight depthwise separable convolutions to reduce the model size and computational complexity, enabling efficient image recognition tasks in environments with limited computational resources.
-
-Depthwise separable convolution, the core technology of MobileNet, decomposes traditional convolution operations into depthwise convolution and pointwise convolution. Depthwise convolution is responsible for extracting spatial features from images, while pointwise convolution combines these features into a higher-level feature representation. This approach significantly reduces the number of parameters and computations in the model, while maintaining good model performance.
+## deit_small_patch16_224
 
 ### Installation
 - Install the latest version of OneFlow
