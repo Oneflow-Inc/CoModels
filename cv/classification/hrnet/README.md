@@ -1,4 +1,4 @@
-## VGG13
+## HRNet
 
 ### Installation
 - Install the latest version of OneFlow
