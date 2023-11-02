@@ -1,9 +1,9 @@
 export PYTHONPATH=$PWD:$PYTHONPATH
 set -aux
 
-GPU_NUMS=2
+GPU_NUMS=8
 PORT=12346
-MODEL_ARCH="fan_base_16_p4_hybrid_in22k_1k"
+MODEL_ARCH="fan_base_18_p16_224"
 
 python3 -m oneflow.distributed.launch \
         --nproc_per_node $GPU_NUMS \

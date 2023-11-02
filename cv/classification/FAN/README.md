@@ -1,4 +1,4 @@
-## VGG13
+## FAN
 
 ### Installation
 - Install the latest version of OneFlow
