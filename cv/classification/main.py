@@ -31,8 +31,6 @@ from utils import (
     AverageMeter,
     TimeMeter
 )
-import wandb
-wandb.init(project="aa",name="FAN")
 
 
 def build_model(config):
@@ -299,7 +297,7 @@ def train_one_epoch(
             throughput, throughput_avg = one_sample_time.get()
             etas =  (num_steps - idx) * samples.size(0) * flow.env.get_world_size() / throughput_avg
             one_sample_time.reset()
-            wandb.log({"loss_avg": loss_avg})
+
             logger.info(
                 f"Train: [{epoch}/{config.TRAIN.EPOCHS}][{idx}/{num_steps}]\t"
                 f"eta {datetime.timedelta(seconds=int(etas))}\tlr {lr:.6f}\t"
