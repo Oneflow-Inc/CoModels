@@ -1,0 +1,1 @@
+../train_graph_distributed.sh
