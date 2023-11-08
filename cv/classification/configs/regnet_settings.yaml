@@ -1,5 +1,5 @@
 DATA:
-  BATCH_SIZE: 128
+  BATCH_SIZE: 32
   DATASET: imagenet
   DATA_PATH: /data/dataset/ImageNet/extract
   IMG_SIZE: 224
