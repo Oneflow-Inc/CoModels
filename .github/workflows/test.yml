@@ -48,22 +48,19 @@ jobs:
           cp -rL $model_dir ${{ env.TEST_DIR }}
       - name: Prepare Container
         run: |
-          ls ${{ env.TEST_DIR }}
           docker rm -f ${{ env.TEST_CONTAINER_NAME }} || true
           docker run --gpus=all -d --rm --privileged --shm-size=8g \
             --pids-limit 2000 \
             --cap-add=SYS_PTRACE --security-opt seccomp=unconfined \
             -v /share_nfs/dataset/ImageNet:/data/dataset/ImageNet \
             -v ${{ env.TEST_DIR }}:/${{ env.TEST_DIR }} \
-            -w /data/dataset \
+            -w /${{ env.TEST_DIR }} \
             --name ${{ env.TEST_CONTAINER_NAME }} \
             ${{ env.TEST_IMG_TAG }} \
             sleep 5400
       - name: Test CoModels
         run: |
           docker exec ${{ env.TEST_CONTAINER_NAME }} ls
-          docker exec ${{ env.TEST_CONTAINER_NAME }} ls /data/dataset/ImageNet
-          docker exec ${{ env.TEST_CONTAINER_NAME }} ls /${{ env.TEST_DIR }}
-          docker exec ${{ env.TEST_CONTAINER_NAME }} python3 -m pip list
+          docker exec ${{ env.TEST_CONTAINER_NAME }} ./infer.sh
 
 
