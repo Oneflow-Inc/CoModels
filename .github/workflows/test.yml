@@ -1,0 +1,53 @@
+name: Build and Test CI
+on:
+  pull_request:
+    types: [opened, review_requested, ready_for_review, synchronize, unlocked]
+  merge_group:
+    types: [checks_requested]
+    workflow_call:
+  inputs:
+    is_priv:
+      required: true
+      type: boolean
+    branch:
+      required: false
+      type: string
+      default: "main"
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CO_MODELS_SRC: CoModels
+
+jobs:
+  test_job:
+    name: Collect information about PR and source
+    #runs-on: ${{ matrix.runs-on }} # todo
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false && github.base_ref == 'main'
+    steps:
+      - name: Check out CoModels
+        uses: actions/checkout@v4
+        with:
+          repository: ${{github.event.pull_request.head.repo.full_name}}
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: ${{ env.CO_MODELS_SRC}}
+
+      - name: Set up PR model name
+        id: pr
+        run: |
+          echo "::set-output name=model::$(echo ${github.event.pull_request.title})"
+
+          #- name: Prepare directories
+          #  run: |
+          #    rel_path="target_dir/${{ steps.pr.outputs.branch }}"
+          #    mkdir -p $rel_path
+          #    cp -rL $rel_path standalone-dir/
+
+          #- name: Run script
+          #  run: |
+          #    cd standalone-dir/
+          #    bash run.sh
+
