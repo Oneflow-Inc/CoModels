@@ -32,12 +32,12 @@ jobs:
     steps:
       - name: Checkout CoModels branch
         uses: actions/checkout@v4
-        if: github.event.push 
+        if: github.event_name == 'push'
         with:
           ref: ${{ inputs.branch }}
           path: ${{ env.CO_MODELS_SRC}}
       - name: Set up model name
-        if: github.event.push 
+        if: github.event_name == 'push'
         run: echo "{model}=${{ inputs.branch }}" >> $GITHUB_OUTPUT
       - name: Checkout PR branch
         uses: actions/checkout@v4
