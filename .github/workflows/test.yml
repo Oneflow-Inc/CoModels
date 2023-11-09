@@ -46,6 +46,9 @@ jobs:
         run: |
           model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/resnet50'
           cp -rL $model_dir ${{ env.TEST_DIR }}
+          pwd
+          ls
+          ls /share_nfs/dataset
       - name: Prepare Container
         run: |
           docker run --gpus=all -d --rm --privileged --shm-size=8g \
