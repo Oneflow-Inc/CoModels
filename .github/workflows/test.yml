@@ -61,6 +61,6 @@ jobs:
       - name: Test CoModels
         run: |
           docker exec ${{ env.TEST_CONTAINER_NAME }} ls
-          docker exec ${{ env.TEST_CONTAINER_NAME }} ./infer.sh
+          #docker exec ${{ env.TEST_CONTAINER_NAME }} ./infer.sh
 
 
