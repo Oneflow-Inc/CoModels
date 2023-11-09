@@ -1,4 +1,4 @@
-name: Build and Test CI
+name: Test branch or PR
 on:
   pull_request:
     types: [opened, review_requested, ready_for_review, synchronize, unlocked]
