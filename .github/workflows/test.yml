@@ -7,15 +7,7 @@ on:
   push:
     branches:
       - 'dev_test_workflow'
-  workflow_call:
-    inputs:
-      is_priv:
-        required: true
-        type: boolean
-      branch:
-        required: false
-        type: string
-        default: "main"
+  workflow_dispatch:
 
 concurrency:
   group: test-${{ github.ref }}
@@ -30,25 +22,18 @@ jobs:
     #runs-on: ${{ matrix.runs-on }} # todo
     runs-on: ubuntu-latest
     steps:
+      - name: Set up branch name
+        id: event-info
+        if: github.event_name == 'push'
+        run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
+      - name: Set up model name from workflow_dispatch branch
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
       - name: Checkout CoModels branch
         uses: actions/checkout@v4
-        if: github.event_name == 'push'
         with:
-          ref: ${{ inputs.branch }}
+          ref: ${{ steps.event-info.outputs.branch }}
           path: ${{ env.CO_MODELS_SRC}}
-      - name: Set up model name
-        if: github.event_name == 'push'
-        run: echo "{model}=${{ inputs.branch }}" >> $GITHUB_OUTPUT
-      - name: Checkout PR branch
-        uses: actions/checkout@v4
-        if: github.event.pull_request.draft == false && github.base_ref == 'main'
-        with:
-          repository: ${{github.event.pull_request.head.repo.full_name}}
-          ref: ${{ github.event.pull_request.head.sha }}
-          path: ${{ env.CO_MODELS_SRC}}
-      - name: Set up model name
-        if: github.event.pull_request.draft == false && github.base_ref == 'main'
-        run: echo "{model}=${github.event.pull_request.title}" >> $GITHUB_OUTPUT
 
           #- name: Prepare directories
           #  run: |
