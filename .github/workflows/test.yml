@@ -29,19 +29,27 @@ jobs:
     name: Collect information about PR and source
     #runs-on: ${{ matrix.runs-on }} # todo
     runs-on: ubuntu-latest
-    #if: github.event.pull_request.draft == false && github.base_ref == 'main'
+    if: github.event.push 
     steps:
-      - name: Check out CoModels
+      - name: Checkout CoModels branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+          path: ${{ env.CO_MODELS_SRC}}
+      - name: Set up model name
+        run: echo "{model}=${{ inputs.branch }}" >> $GITHUB_OUTPUT
+
+    if: github.event.pull_request.draft == false && github.base_ref == 'main'
+    steps:
+      - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
           repository: ${{github.event.pull_request.head.repo.full_name}}
           ref: ${{ github.event.pull_request.head.sha }}
           path: ${{ env.CO_MODELS_SRC}}
 
-      - name: Set up PR model name
-        id: pr
-        run: |
-          echo "::set-output name=model::$(echo ${github.event.pull_request.title})"
+      - name: Set up model name
+        run: echo "{model}=${github.event.pull_request.title}" >> $GITHUB_OUTPUT
 
           #- name: Prepare directories
           #  run: |
