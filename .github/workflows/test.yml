@@ -46,7 +46,7 @@ jobs:
         run: |
           model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/resnet50'
           cp -rL $model_dir ${{ env.TEST_DIR }}
-      - name: Prepare test directory
+      - name: Prepare Container
         run: |
           docker run --gpus=all -d --rm --privileged --shm-size=8g \
             --pids-limit 2000 \
@@ -56,16 +56,13 @@ jobs:
             -w /data \
             --name ${TEST_CONTAINER_NAME} \
             ${{ env.TEST_IMG_TAG }} \
-            ls && ls /data/dataset/ImageNet && ls /${{ env.TEST_DIR }}
+            ls && ls /${{ env.TEST_DIR }}
           #  && python3 -m oneflow --doctor 
           #model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/${{ env.BRANCH }}'
           #docker images | grep oneflow
           #model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/resnet50'
           #cp -rL $model_dir ${{ env.TEST_DIR }}
-      #- name: Run scripts
-      #  run: |
-      #    cd ${{ env.TEST_DIR }}
-      #    ls
-      #    bash infer.sh
-      #    bash train.sh
+      - name: Run scripts
+        run: |
+          df -h
 
