@@ -1,4 +1,4 @@
-## vit_base_patch16_224
+## vit_small_patch16_384
 
 ### Installation
 - Install the latest version of OneFlow
