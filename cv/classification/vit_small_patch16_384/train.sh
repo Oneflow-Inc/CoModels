@@ -7,7 +7,7 @@ MODEL_ARCH="vit_small_patch16_384"
 IMAGE_SIZE=384
 BATCH_SIZE=64
 LEARNING_RATE=1e-4
-export CUDA_VISIBLE_DEVICES=5,6
+
 python3 -m oneflow.distributed.launch \
         --nproc_per_node $GPU_NUMS \
         --master_addr 127.0.0.1 \
