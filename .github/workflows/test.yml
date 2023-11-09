@@ -22,7 +22,7 @@ jobs:
     name: Collect information about PR and source
     #runs-on: ${{ matrix.runs-on }} # todo
     #runs-on: ubuntu-latest
-    runs-on: co-models-ci-0
+    runs-on: [self-hosted]
     steps:
       - name: Set up branch name
         id: event-info
