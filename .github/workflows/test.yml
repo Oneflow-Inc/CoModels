@@ -25,14 +25,18 @@ jobs:
       - name: Set up branch name
         id: event-info
         if: github.event_name == 'push'
-        run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
+        run: |
+          branch=${{ github.ref_name }}
+          echo "BRANCH=$branch" >> $GITHUB_ENV
       - name: Set up model name from workflow_dispatch branch
         if: github.event_name == 'workflow_dispatch'
-        run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
+        run: |
+          branch=${{ github.ref_name }}
+          echo "BRANCH=$branch" >> $GITHUB_ENV
       - name: Checkout CoModels branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ steps.event-info.outputs.branch }}
+          ref: ${{ env.BRANCH }}
           path: ${{ env.CO_MODELS_SRC}}
 
           #- name: Prepare directories
