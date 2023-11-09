@@ -1,19 +1,16 @@
 name: Test branch or PR
 on:
-  push:
-    branches:
-      - 'dev_test_workflow'
+  #push:
+  #  branches:
+  #    - 'dev_test_workflow'
   workflow_dispatch:
 
 concurrency:
-  group: test-${{ github.ref }}
+  group: build-test-image-for-comodels
   cancel-in-progress: true
 
 env:
   CO_MODELS_SRC: CoModels
-  TEST_DIR: test_dir
-  TEST_IMG_TAG: registry.cn-beijing.aliyuncs.com/oneflow/manylinux2014_x86_64_cuda12.2:bba403da5da597c3f7905dfc52b24989ee21ffb1
-  TEST_CONTAINER_NAME: co_models_test 
 
 jobs:
   build_job:

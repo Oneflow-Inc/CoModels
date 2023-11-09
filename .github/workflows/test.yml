@@ -4,9 +4,9 @@ on:
     types: [opened, review_requested, ready_for_review, synchronize, unlocked]
   merge_group:
     types: [checks_requested]
-  #push:
-  #  branches:
-  #    - 'dev_test_workflow'
+  push:
+    branches:
+      - 'dev_test_workflow'
   workflow_dispatch:
 
 concurrency:
@@ -16,7 +16,7 @@ concurrency:
 env:
   CO_MODELS_SRC: CoModels
   TEST_DIR: test_dir
-  TEST_IMG_TAG: registry.cn-beijing.aliyuncs.com/oneflow/manylinux2014_x86_64_cuda12.2:bba403da5da597c3f7905dfc52b24989ee21ffb1
+  TEST_IMG_TAG: comodels_test:latest
   TEST_CONTAINER_NAME: co_models_test 
 
 jobs:
@@ -48,7 +48,7 @@ jobs:
           cp -rL $model_dir ${{ env.TEST_DIR }}
       - name: Prepare Container
         run: |
-          pwd
+          ls ${{ env.TEST_DIR }}
           docker rm -f ${{ env.TEST_CONTAINER_NAME }} || true
           docker run --gpus=all -d --rm --privileged --shm-size=8g \
             --pids-limit 2000 \
@@ -59,20 +59,11 @@ jobs:
             --name ${{ env.TEST_CONTAINER_NAME }} \
             ${{ env.TEST_IMG_TAG }} \
             sleep 5400
-          #  && python3 -m oneflow --doctor 
-          #model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/${{ env.BRANCH }}'
-          #docker images | grep oneflow
-          #model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/resnet50'
-          #cp -rL $model_dir ${{ env.TEST_DIR }}
-      - name: Test container
-        #if: ${{ !fromJson(matrix.cache-hit) && contains(matrix.runs-on, 'self-hosted') }}
+      - name: Test CoModels
         run: |
           docker exec ${{ env.TEST_CONTAINER_NAME }} ls
+          docker exec ${{ env.TEST_CONTAINER_NAME }} ls /data/dataset/ImageNet
+          docker exec ${{ env.TEST_CONTAINER_NAME }} ls /${{ env.TEST_DIR }}
           docker exec ${{ env.TEST_CONTAINER_NAME }} python3 -m pip list
-      - name: Install OneFlow
-        #if: ${{ !fromJson(matrix.cache-hit) && contains(matrix.runs-on, 'self-hosted') }}
-        run: |
-          docker exec ${{ env.TEST_CONTAINER_NAME }} python3 -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-          docker exec ${{ env.TEST_CONTAINER_NAME }} python3 -m pip install --pre oneflow -f https://oneflow-staging.oss-cn-beijing.aliyuncs.com/branch/master/cu118
 
 
