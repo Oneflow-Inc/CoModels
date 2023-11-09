@@ -49,13 +49,14 @@ jobs:
       - name: Prepare Container
         run: |
           pwd
+          docker rm -f ${{ env.TEST_CONTAINER_NAME }} || true
           docker run --gpus=all -d --rm --privileged --shm-size=8g \
             --pids-limit 2000 \
             --cap-add=SYS_PTRACE --security-opt seccomp=unconfined \
             -v /share_nfs/dataset/ImageNet:/data/dataset/ImageNet \
             -v ${{ env.TEST_DIR }}:/${{ env.TEST_DIR }} \
             -w /data/dataset \
-            --name ${TEST_CONTAINER_NAME} \
+            --name ${{ env.TEST_CONTAINER_NAME }} \
             ${{ env.TEST_IMG_TAG }} \
             sleep 5400
           #  && python3 -m oneflow --doctor 
@@ -75,7 +76,7 @@ jobs:
       - name: Install OneFlow
         #if: ${{ !fromJson(matrix.cache-hit) && contains(matrix.runs-on, 'self-hosted') }}
         run: |
-          docker exec ${TEST_CONTAINER_NAME} python3 -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-          docker exec ${TEST_CONTAINER_NAME} python3 -m pip install --pre oneflow -f https://oneflow-staging.oss-cn-beijing.aliyuncs.com/branch/master/cu118
+          docker exec ${{ env.TEST_CONTAINER_NAME }} python3 -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+          docker exec ${{ env.TEST_CONTAINER_NAME }} python3 -m pip install --pre oneflow -f https://oneflow-staging.oss-cn-beijing.aliyuncs.com/branch/master/cu118
 
 
