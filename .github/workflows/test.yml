@@ -46,17 +46,12 @@ jobs:
         run: |
           model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/resnet50'
           cp -rL $model_dir ${{ env.TEST_DIR }}
-          echo "*******************"
-          ls ${{ env.TEST_DIR }}
-          echo "*******************"
-          realpath ${{ env.TEST_DIR }}
-          echo "*******************"
           docker rm -f ${{ env.TEST_CONTAINER_NAME }} || true
           docker run --gpus=all -d --rm --privileged --shm-size=8g \
             --pids-limit 2000 \
             --cap-add=SYS_PTRACE --security-opt seccomp=unconfined \
             -v /share_nfs/dataset/ImageNet:/data/dataset/ImageNet \
-            -v ${{ env.TEST_DIR }}:/workspace/${{ env.TEST_DIR }} \
+            -v $(pwd)/${{ env.TEST_DIR }}:/workspace/${{ env.TEST_DIR }} \
             -w /workspace/${{ env.TEST_DIR }} \
             --name ${{ env.TEST_CONTAINER_NAME }} \
             ${{ env.TEST_IMG_TAG }} \
