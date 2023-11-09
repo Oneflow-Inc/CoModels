@@ -16,6 +16,7 @@ concurrency:
 env:
   CO_MODELS_SRC: CoModels
   TEST_DIR: test_dir
+  TEST_CONTAINER_NAME: registry.cn-beijing.aliyuncs.com/oneflow/manylinux2014_x86_64_cuda12.2
 
 jobs:
   test_job:
@@ -42,13 +43,13 @@ jobs:
           path: ${{ env.CO_MODELS_SRC}}
       - name: Prepare test directory
         run: |
-          docker run -it --rm --runtime=nvidia --privileged \
-            --network host --gpus=all \
-            --ipc=host \
+          docker run --gpus=all -d --rm --privileged --shm-size=8g \
+            --pids-limit 2000 \
+            --cap-add=SYS_PTRACE --security-opt seccomp=unconfined \
             -v /share_nfs:/data \
             -w /data \
-            registry.cn-beijing.aliyuncs.com/oneflow/manylinux2014_x86_64_cuda12.2 \
-            ls
+            --name ${TEST_CONTAINER_NAME} \
+            ls && python3 -m oneflow --doctor 
           #model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/${{ env.BRANCH }}'
           #docker images | grep oneflow
           #model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/resnet50'
