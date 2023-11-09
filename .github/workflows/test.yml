@@ -46,6 +46,7 @@ jobs:
         run: |
           model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/resnet50'
           cp -rL $model_dir ${{ env.TEST_DIR }}
+          ls ${{ env.TEST_DIR }}
       - name: Prepare Container
         run: |
           docker rm -f ${{ env.TEST_CONTAINER_NAME }} || true
