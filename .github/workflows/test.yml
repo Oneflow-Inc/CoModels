@@ -46,7 +46,11 @@ jobs:
         run: |
           model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/resnet50'
           cp -rL $model_dir ${{ env.TEST_DIR }}
+          echo "*******************"
           ls ${{ env.TEST_DIR }}
+          echo "*******************"
+          realpath ${{ env.TEST_DIR }}
+          echo "*******************"
           docker rm -f ${{ env.TEST_CONTAINER_NAME }} || true
           docker run --gpus=all -d --rm --privileged --shm-size=8g \
             --pids-limit 2000 \
