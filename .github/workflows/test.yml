@@ -43,6 +43,7 @@ jobs:
       - name: Prepare test directory
         run: |
           #model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/${{ env.BRANCH }}'
+          docker images | grep oneflow
           model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/resnet50'
           cp -rL $model_dir ${{ env.TEST_DIR }}
       - name: Run scripts
