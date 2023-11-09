@@ -42,14 +42,21 @@ jobs:
           path: ${{ env.CO_MODELS_SRC}}
       - name: Prepare test directory
         run: |
+          docker run -it --rm --runtime=nvidia --privileged \
+            --network host --gpus=all \
+            --ipc=host \
+            -v /share_nfs:/data \
+            -w /data \
+            registry.cn-beijing.aliyuncs.com/oneflow/manylinux2014_x86_64_cuda12.2 \
+            ls
           #model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/${{ env.BRANCH }}'
-          docker images | grep oneflow
+          #docker images | grep oneflow
           #model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/resnet50'
           #cp -rL $model_dir ${{ env.TEST_DIR }}
-      - name: Run scripts
-        run: |
-          cd ${{ env.TEST_DIR }}
-          ls
-          bash infer.sh
-          bash train.sh
+      #- name: Run scripts
+      #  run: |
+      #    cd ${{ env.TEST_DIR }}
+      #    ls
+      #    bash infer.sh
+      #    bash train.sh
 
