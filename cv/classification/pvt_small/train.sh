@@ -1,7 +1,7 @@
 export PYTHONPATH=$PWD:$PYTHONPATH
 set -aux
 
-GPU_NUMS=
+GPU_NUMS=8
 PORT=12346
 MODEL_ARCH="pvt_small"
 
