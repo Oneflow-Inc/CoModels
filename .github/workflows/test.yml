@@ -4,15 +4,15 @@ on:
     types: [opened, review_requested, ready_for_review, synchronize, unlocked]
   merge_group:
     types: [checks_requested]
-    workflow_call:
-  inputs:
-    is_priv:
-      required: true
-      type: boolean
-    branch:
-      required: false
-      type: string
-      default: "main"
+  workflow_call:
+    inputs:
+      is_priv:
+        required: true
+        type: boolean
+      branch:
+        required: false
+        type: string
+        default: "main"
 
 concurrency:
   group: test-${{ github.ref }}
