@@ -4,6 +4,9 @@ on:
     types: [opened, review_requested, ready_for_review, synchronize, unlocked]
   merge_group:
     types: [checks_requested]
+  push:
+    branches:
+      - 'dev_test_workflow'
   workflow_call:
     inputs:
       is_priv:
