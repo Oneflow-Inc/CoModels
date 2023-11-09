@@ -6,7 +6,7 @@ PORT=12346
 MODEL_ARCH="vit_base_patch32_224"
 BATCH_SIZE=256
 LEARNING_RATE=1e-4
-export CUDA_VISIBLE_DEVICES=2,3
+
 python3 -m oneflow.distributed.launch \
         --nproc_per_node $GPU_NUMS \
         --master_addr 127.0.0.1 \
