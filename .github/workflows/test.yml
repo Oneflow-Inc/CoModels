@@ -44,14 +44,20 @@ jobs:
           path: ${{ env.CO_MODELS_SRC}}
       - name: Prepare test directory
         run: |
+          model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/resnet50'
+          cp -rL $model_dir ${{ env.TEST_DIR }}
+      - name: Prepare test directory
+        run: |
           docker run --gpus=all -d --rm --privileged --shm-size=8g \
             --pids-limit 2000 \
             --cap-add=SYS_PTRACE --security-opt seccomp=unconfined \
             -v /share_nfs:/data \
+            -v ${{ env.TEST_DIR }}:/${{ env.TEST_DIR }} \
             -w /data \
             --name ${TEST_CONTAINER_NAME} \
             ${{ env.TEST_IMG_TAG }} \
-            ls && python3 -m oneflow --doctor 
+            ls && ls /data/dataset/ImageNet && ls /${{ env.TEST_DIR }}
+          #  && python3 -m oneflow --doctor 
           #model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/${{ env.BRANCH }}'
           #docker images | grep oneflow
           #model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/resnet50'
