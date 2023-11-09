@@ -1,0 +1,33 @@
+name: Test branch or PR
+on:
+  push:
+    branches:
+      - 'dev_test_workflow'
+  workflow_dispatch:
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CO_MODELS_SRC: CoModels
+  TEST_DIR: test_dir
+  TEST_IMG_TAG: registry.cn-beijing.aliyuncs.com/oneflow/manylinux2014_x86_64_cuda12.2:bba403da5da597c3f7905dfc52b24989ee21ffb1
+  TEST_CONTAINER_NAME: co_models_test 
+
+jobs:
+  build_job:
+    name: build test image
+    runs-on: [self-hosted]
+    steps:
+      - name: Checkout CoModels branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.BRANCH }}
+          path: ${{ env.CO_MODELS_SRC}}
+      - name: build image
+        run: |
+          cd ${{ env.CO_MODELS_SRC}}
+          bash docker/build.sh
+
+
