@@ -41,6 +41,7 @@ jobs:
           path: ${{ env.CO_MODELS_SRC}}
       - name: Prepare test directory
         run: |
-          model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/${{ env.BRANCH }}'
+          #model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/${{ env.BRANCH }}'
+          model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/resnet50'
           cp -rL $model_dir ${{ env.TEST_DIR }}
 
