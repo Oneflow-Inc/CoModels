@@ -58,7 +58,7 @@ jobs:
             sleep 5400
       - name: run 
         run: |
-          docker exec ${{ env.TEST_CONTAINER_NAME }} ./infer.sh
+          docker exec ${{ env.TEST_CONTAINER_NAME }} bash ./infer.sh
           nvidia-smi
 
 
