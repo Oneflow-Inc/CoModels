@@ -46,17 +46,15 @@ jobs:
         run: |
           model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/resnet50'
           cp -rL $model_dir ${{ env.TEST_DIR }}
-          pwd
-          ls
-          ls /share_nfs/dataset
       - name: Prepare Container
         run: |
+          pwd
           docker run --gpus=all -d --rm --privileged --shm-size=8g \
             --pids-limit 2000 \
             --cap-add=SYS_PTRACE --security-opt seccomp=unconfined \
-            -v /share_nfs:/data \
+            -v /share_nfs/dataset/ImageNet:/data/dataset/ImageNet \
             -v ${{ env.TEST_DIR }}:/${{ env.TEST_DIR }} \
-            -w /data \
+            -w /data/dataset \
             --name ${TEST_CONTAINER_NAME} \
             ${{ env.TEST_IMG_TAG }} \
             ls && df -h
@@ -65,7 +63,15 @@ jobs:
           #docker images | grep oneflow
           #model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/resnet50'
           #cp -rL $model_dir ${{ env.TEST_DIR }}
-      - name: Run scripts
+      - name: Test container
+        #if: ${{ !fromJson(matrix.cache-hit) && contains(matrix.runs-on, 'self-hosted') }}
         run: |
-          df -h
+          docker exec ${{ env.TEST_CONTAINER_NAME }} ls
+          docker exec ${{ env.TEST_CONTAINER_NAME }} python3 -m pip list
+      - name: Install OneFlow
+        #if: ${{ !fromJson(matrix.cache-hit) && contains(matrix.runs-on, 'self-hosted') }}
+        run: |
+          docker exec ${TEST_CONTAINER_NAME} python3 -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+          docker exec ${TEST_CONTAINER_NAME} python3 -m pip install --pre oneflow -f https://oneflow-staging.oss-cn-beijing.aliyuncs.com/branch/master/cu118
+
 
