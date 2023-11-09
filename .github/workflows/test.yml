@@ -15,6 +15,7 @@ concurrency:
 
 env:
   CO_MODELS_SRC: CoModels
+  TEST_DIR: test_dir
 
 jobs:
   test_job:
@@ -38,15 +39,8 @@ jobs:
         with:
           ref: ${{ env.BRANCH }}
           path: ${{ env.CO_MODELS_SRC}}
-
-          #- name: Prepare directories
-          #  run: |
-          #    rel_path="target_dir/${{ steps.pr.outputs.branch }}"
-          #    mkdir -p $rel_path
-          #    cp -rL $rel_path standalone-dir/
-
-          #- name: Run script
-          #  run: |
-          #    cd standalone-dir/
-          #    bash run.sh
+      - name: Prepare test directory
+        run: |
+          model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/${{ env.BRANCH }}'
+          cp -rL $model_dir ${{ env.TEST_DIR }}
 
