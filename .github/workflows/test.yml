@@ -56,9 +56,9 @@ jobs:
             --name ${{ env.TEST_CONTAINER_NAME }} \
             ${{ env.TEST_IMG_TAG }} \
             sleep 5400
-          docker exec ${{ env.TEST_CONTAINER_NAME }} ls
-          docker exec ${{ env.TEST_CONTAINER_NAME }} echo "-----------"
-          docker exec ${{ env.TEST_CONTAINER_NAME }} pwd
-          #docker exec ${{ env.TEST_CONTAINER_NAME }} ./infer.sh
+      - name: run 
+        run: |
+          docker exec ${{ env.TEST_CONTAINER_NAME }} ./infer.sh
+          nvidia-smi
 
 
