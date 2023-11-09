@@ -16,7 +16,8 @@ concurrency:
 env:
   CO_MODELS_SRC: CoModels
   TEST_DIR: test_dir
-  TEST_CONTAINER_NAME: registry.cn-beijing.aliyuncs.com/oneflow/manylinux2014_x86_64_cuda12.2
+  TEST_IMG_TAG: registry.cn-beijing.aliyuncs.com/oneflow/manylinux2014_x86_64_cuda12.2:bba403da5da597c3f7905dfc52b24989ee21ffb1
+  TEST_CONTAINER_NAME: co_models_test 
 
 jobs:
   test_job:
@@ -49,6 +50,7 @@ jobs:
             -v /share_nfs:/data \
             -w /data \
             --name ${TEST_CONTAINER_NAME} \
+            ${{ env.TEST_IMG_TAG }} \
             ls && python3 -m oneflow --doctor 
           #model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/${{ env.BRANCH }}'
           #docker images | grep oneflow
