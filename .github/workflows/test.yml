@@ -24,11 +24,11 @@ jobs:
     name: Collect information about PR and source
     runs-on: [self-hosted]
     steps:
-      - name: Set up MODEL_ARCH 
-        if: github.event_name == 'push'
-        run: |
-          # use resnet50 for debug
-          echo "MODEL_ARCH=resnet50" >> $GITHUB_ENV
+      #- name: Set up MODEL_ARCH 
+      #  if: github.event_name == 'push'
+      #  run: |
+      #    # use resnet50 for debug
+      #    echo "MODEL_ARCH=resnet50" >> $GITHUB_ENV
       - name: Set up MODEL_ARCH from PR
         if: github.event.pull_request.draft == false && github.base_ref == 'master'
         run: |
