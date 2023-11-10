@@ -51,10 +51,12 @@ jobs:
           model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/${{ env.MODEL_ARCH }}'
           if [ -d "$model_dir" ] && [ -n "${{ env.MODEL_ARCH }}" ]; then
             cp -rL "$model_dir" "${{ env.TEST_DIR }}"
+            echo "READY_FOR_TEST=true" >> $GITHUB_ENV
           else
             return 0
           fi
       - name: Prepare Container
+        if: env.READY_FOR_TEST == true
         run: |
           docker rm -f ${{ env.TEST_CONTAINER_NAME }} || true
           docker run --gpus=all -d --rm --privileged --shm-size=8g \
@@ -68,10 +70,12 @@ jobs:
             ${{ env.TEST_IMG_TAG }} \
             sleep 5400
       - name: run inference
+        if: env.READY_FOR_TEST == true
         run: |
           docker exec ${{ env.TEST_CONTAINER_NAME }} nvidia-smi
           docker exec ${{ env.TEST_CONTAINER_NAME }} bash ./infer.sh
       - name: run training
+        if: env.READY_FOR_TEST == true
         run: |
           docker exec ${{ env.TEST_CONTAINER_NAME }} sed -i 's/main.py/main.py --epochs 1/g' train.sh 
           #docker exec ${{ env.TEST_CONTAINER_NAME }} sed -i 's/GPU_NUMS=[0-9]*/GPU_NUMS=2/g' train.sh 
