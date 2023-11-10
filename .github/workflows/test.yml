@@ -63,6 +63,9 @@ jobs:
             --name ${{ env.TEST_CONTAINER_NAME }} \
             ${{ env.TEST_IMG_TAG }} \
             sleep 5400
+      - name: ls
+        run: |
+          docker exec ${{ env.TEST_CONTAINER_NAME }} ls /
       - name: run inference
         run: |
           docker exec ${{ env.TEST_CONTAINER_NAME }} FLOWVISION_CACHE=/flowvision_cache bash ./infer.sh
