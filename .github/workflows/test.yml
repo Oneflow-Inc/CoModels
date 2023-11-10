@@ -52,7 +52,7 @@ jobs:
           if [ -d "$model_dir" ]; then
             cp -rL "$model_dir" "${{ env.TEST_DIR }}"
           else
-            exit 0
+            return 0
           fi
       - name: Prepare Container
         run: |
