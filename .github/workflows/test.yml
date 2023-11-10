@@ -54,7 +54,6 @@ jobs:
         run: |
           docker rm -f ${{ env.TEST_CONTAINER_NAME }} || true
           docker run --gpus=all -d --rm --privileged --shm-size=8g \
-            --pids-limit 2000 \
             --cap-add=SYS_PTRACE --security-opt seccomp=unconfined \
             -v /share_nfs/dataset/ImageNet:/data/dataset/ImageNet \
             -v /share_nfs/model_zoo/flowvision_cache:/oneflow/flowvision_cache \
