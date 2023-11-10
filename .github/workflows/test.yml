@@ -49,7 +49,11 @@ jobs:
       - name: Prepare test directory
         run: |
           model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/${{ env.MODEL_ARCH }}'
-          cp -rL $model_dir ${{ env.TEST_DIR }}
+          if [ -d "$model_dir" ]; then
+            cp -rL "$model_dir" "${{ env.TEST_DIR }}"
+          else
+            exit 0
+          fi
       - name: Prepare Container
         run: |
           docker rm -f ${{ env.TEST_CONTAINER_NAME }} || true
