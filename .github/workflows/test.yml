@@ -70,7 +70,7 @@ jobs:
       - name: run training
         run: |
           docker exec ${{ env.TEST_CONTAINER_NAME }} sed -i 's/main.py/main.py --epochs 1/g' train.sh 
-          docker exec ${{ env.TEST_CONTAINER_NAME }} sed -i 's/GPU_NUMS=[0-9]*/GPU_NUMS=2/g' train.sh 
+          #docker exec ${{ env.TEST_CONTAINER_NAME }} sed -i 's/GPU_NUMS=[0-9]*/GPU_NUMS=2/g' train.sh 
           docker exec ${{ env.TEST_CONTAINER_NAME }} bash ./train.sh
           
 
