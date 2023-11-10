@@ -4,9 +4,9 @@ on:
     types: [opened, review_requested, ready_for_review, synchronize, unlocked]
   merge_group:
     types: [checks_requested]
-  push:
-    branches:
-      - 'dev_test_workflow' # debug only
+  #push:
+  #  branches:
+  #    - 'dev_test_workflow' # debug only
   workflow_dispatch:
 
 concurrency:
