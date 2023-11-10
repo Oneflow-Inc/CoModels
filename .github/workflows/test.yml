@@ -6,7 +6,7 @@ on:
     types: [checks_requested]
   push:
     branches:
-      - 'dev_test_workflow'
+      - 'dev_test_workflow' # debug only
   workflow_dispatch:
 
 concurrency:
@@ -66,7 +66,7 @@ jobs:
       - name: run inference
         run: |
           docker exec ${{ env.TEST_CONTAINER_NAME }} nvidia-smi
-          #docker exec ${{ env.TEST_CONTAINER_NAME }} bash ./infer.sh
+          docker exec ${{ env.TEST_CONTAINER_NAME }} bash ./infer.sh
       - name: run training
         run: |
           docker exec ${{ env.TEST_CONTAINER_NAME }} sed -i 's/main.py/main.py --epochs 1/g' train.sh 
