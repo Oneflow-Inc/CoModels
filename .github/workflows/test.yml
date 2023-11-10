@@ -66,12 +66,11 @@ jobs:
             sleep 5400
       - name: run inference
         run: |
-          docker exec ${{ env.TEST_CONTAINER_NAME }} bash ./infer.sh
-          #docker exec ${{ env.TEST_CONTAINER_NAME }} FLOWVISION_CACHE=/flowvision_cache bash ./infer.sh
+          docker exec ${{ env.TEST_CONTAINER_NAME }} nvidia-smi
+          #docker exec ${{ env.TEST_CONTAINER_NAME }} bash ./infer.sh
       - name: run training
         run: |
           docker exec ${{ env.TEST_CONTAINER_NAME }} sed -i 's/main.py/main.py --epochs 1/g' train.sh 
           docker exec ${{ env.TEST_CONTAINER_NAME }} bash ./train.sh
-          #docker exec ${{ env.TEST_CONTAINER_NAME }} FLOWVISION_CACHE=/flowvision_cache bash ./train.sh
           
 
