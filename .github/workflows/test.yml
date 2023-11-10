@@ -44,12 +44,12 @@ jobs:
       - name: Checkout CoModels branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ env.BRANCH }}
+          ref: ${{ github.ref }}
           path: ${{ env.CO_MODELS_SRC}}
       - name: Prepare test directory
         run: |
           model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/${{ env.MODEL_ARCH }}'
-          if [ -d "$model_dir" ]; then
+          if [ -d "$model_dir" ] && [ -n "${{ env.MODEL_ARCH }}" ]; then
             cp -rL "$model_dir" "${{ env.TEST_DIR }}"
           else
             return 0
