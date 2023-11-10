@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: test-${{ github.ref }}
+  group: comodels-test-${{ github.ref }}
   cancel-in-progress: true
 
 env:
@@ -22,8 +22,6 @@ env:
 jobs:
   test_job:
     name: Collect information about PR and source
-    #runs-on: ${{ matrix.runs-on }} # todo
-    #runs-on: ubuntu-latest
     runs-on: [self-hosted]
     steps:
       - name: Set up branch name
@@ -42,10 +40,12 @@ jobs:
         with:
           ref: ${{ env.BRANCH }}
           path: ${{ env.CO_MODELS_SRC}}
-      - name: Prepare test directory and Container
+      - name: Prepare test directory
         run: |
           model_dir='${{ env.CO_MODELS_SRC }}/cv/classification/resnet50'
           cp -rL $model_dir ${{ env.TEST_DIR }}
+      - name: Prepare Container
+        run: |
           docker rm -f ${{ env.TEST_CONTAINER_NAME }} || true
           docker run --gpus=all -d --rm --privileged --shm-size=8g \
             --pids-limit 2000 \
@@ -56,9 +56,12 @@ jobs:
             --name ${{ env.TEST_CONTAINER_NAME }} \
             ${{ env.TEST_IMG_TAG }} \
             sleep 5400
-      - name: run 
+      - name: run inference
         run: |
           docker exec ${{ env.TEST_CONTAINER_NAME }} bash ./infer.sh
-          nvidia-smi
-
+      - name: run training
+        run: |
+          docker exec ${{ env.TEST_CONTAINER_NAME }} sed -i 's/main.py/main.py --epochs 1/g' train.sh 
+          docker exec ${{ env.TEST_CONTAINER_NAME }} bash ./train.sh
+          
 
