@@ -1,4 +1,4 @@
-## EfficientNet b0
+## EfficientNet b2
 
 ### Installation
 - Install the latest version of OneFlow
