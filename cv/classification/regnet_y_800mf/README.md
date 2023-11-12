@@ -1,5 +1,6 @@
-## EfficientNet 
-EfficientNet is an efficient neural network architecture that achieves outstanding performance with relatively fewer parameters and computational costs by combining specific components and techniques in deep learning. The design of EfficientNet is based on the concept of Compound Scaling, which simultaneously adjusts the network's width, depth, and resolution across different dimensions to achieve a better balance between performance and efficiency. This enables EfficientNet to excel in various scenarios with limited computational resources, such as mobile devices and embedded systems, for tasks like image classification, object detection, and semantic segmentation. The emergence of EfficientNet has greatly advanced the efficient deployment and application of deep learning models, making it a significant breakthrough in the field.
+## RegNet
+RegNet is a neural network architecture designed for deep learning tasks, particularly in the field of computer vision. It was introduced in the paper titled "Designing Network Design Spaces" by Touvron et al. in 2020. RegNet is known for its efficiency, scalability, and strong performance on various computer vision tasks, making it a popular choice for researchers and practitioners in the field.
+
 ### Installation
 - Install the latest version of OneFlow
 ```bash
