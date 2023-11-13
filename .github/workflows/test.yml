@@ -4,9 +4,6 @@ on:
     types: [opened, review_requested, ready_for_review, synchronize, unlocked]
   merge_group:
     types: [checks_requested]
-  #push:
-  #  branches:
-  #    - 'dev_test_workflow' # debug only
   workflow_dispatch:
 
 concurrency:
@@ -24,11 +21,6 @@ jobs:
     name: Collect information about PR and source
     runs-on: [self-hosted]
     steps:
-      #- name: Set up MODEL_ARCH 
-      #  if: github.event_name == 'push'
-      #  run: |
-      #    # use resnet50 for debug
-      #    echo "MODEL_ARCH=resnet50" >> $GITHUB_ENV
       - name: Set up MODEL_ARCH from PR
         if: github.event.pull_request.draft == false && github.base_ref == 'master'
         run: |
@@ -52,8 +44,6 @@ jobs:
           if [ -d "$model_dir" ] && [ -n "${{ env.MODEL_ARCH }}" ]; then
             cp -rL "$model_dir" "${{ env.TEST_DIR }}"
             echo "READY_FOR_TEST=true" >> $GITHUB_ENV
-          else
-            exit 0
           fi
       - name: Prepare Container
         if: env.READY_FOR_TEST == true
