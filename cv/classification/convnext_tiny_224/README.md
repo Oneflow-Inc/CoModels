@@ -1,4 +1,4 @@
-## CrossFormer-L
+## ConvNext
 
 ### Installation
 - Install the latest version of OneFlow
