@@ -1,5 +1,5 @@
-## EfficientNet 
-EfficientNet is an efficient neural network architecture that achieves outstanding performance with relatively fewer parameters and computational costs by combining specific components and techniques in deep learning. The design of EfficientNet is based on the concept of Compound Scaling, which simultaneously adjusts the network's width, depth, and resolution across different dimensions to achieve a better balance between performance and efficiency. This enables EfficientNet to excel in various scenarios with limited computational resources, such as mobile devices and embedded systems, for tasks like image classification, object detection, and semantic segmentation. The emergence of EfficientNet has greatly advanced the efficient deployment and application of deep learning models, making it a significant breakthrough in the field.
+## vit_samll_patch32_384
+
 ### Installation
 - Install the latest version of OneFlow
 ```bash
