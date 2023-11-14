@@ -1,7 +1,8 @@
-name: Test branch or PR
+name: Test branch or PR on cv/classification
 on:
   pull_request:
-    types: [opened, review_requested, ready_for_review, synchronize, unlocked]
+    paths:
+      - "*cv/classification/*"
   merge_group:
     types: [checks_requested]
   workflow_dispatch:
@@ -62,7 +63,6 @@ jobs:
       - name: run inference
         if: env.READY_FOR_TEST == true
         run: |
-          docker exec ${{ env.TEST_CONTAINER_NAME }} nvidia-smi
           docker exec ${{ env.TEST_CONTAINER_NAME }} bash ./infer.sh
       - name: run training
         if: env.READY_FOR_TEST == true
