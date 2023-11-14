@@ -1,8 +1,8 @@
 name: Test branch or PR on cv/classification
 on:
   pull_request:
-          #paths:
-          #  - "*cv/classification/*"
+    paths:
+      - "*cv/classification/*"
   merge_group:
     types: [checks_requested]
   workflow_dispatch:
