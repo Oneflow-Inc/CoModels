@@ -1,4 +1,4 @@
-## RegNet_x_400mf
+## RegNet_y_1_6gf
 
 ### Installation
 - Install the latest version of OneFlow
