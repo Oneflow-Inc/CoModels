@@ -13,5 +13,6 @@ python3 -m oneflow.distributed.launch \
         --cfg configs/default_settings.yaml \
         --model_arch $MODEL_ARCH \
         --lr 1e-5 \
+        --batch-size 8 \
         --image-size 384
 
