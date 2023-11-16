@@ -143,7 +143,7 @@ def main(config):
     model.cuda()
 
     optimizer = build_optimizer(config, model)
-    model = flow.nn.parallel.DistributedDataParallel(model, broadcast_buffers=False, use_bucket=False)
+    model = flow.nn.parallel.DistributedDataParallel(model, broadcast_buffers=False)
     # FIXME: model with DDP wrapper doesn't have model.module
     model_without_ddp = model
 
