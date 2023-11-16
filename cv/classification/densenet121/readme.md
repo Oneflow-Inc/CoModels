@@ -91,12 +91,19 @@ For ImageNet dataset, you can download it from http://image-net.org/. We provide
 
 
 ### Training
-- ddp training with simple bash file
-```bash
 
-bash train.sh
+You can use bash script `train.sh` to train this model.
+
+```bash
+sh train.sh
+```
+
+### inference
+
+Bash script `infer.sh` is used to infer the trained model.
+
+```bash
+sh infer.sh
 ```
 
 
-## Reference
-- [Swin-Transformer](https://github.com/microsoft/Swin-Transformer)
