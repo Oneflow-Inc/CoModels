@@ -105,8 +105,3 @@ Bash script `infer.sh` is used to infer the trained model.
 ```bash
 sh infer.sh
 ```
-
-
-
-## Reference
-- [Swin-Transformer](https://github.com/microsoft/Swin-Transformer)

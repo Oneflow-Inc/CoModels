@@ -107,5 +107,3 @@ sh infer.sh
 ```
 
 
-## Reference
-- [Swin-Transformer](https://github.com/microsoft/Swin-Transformer)
