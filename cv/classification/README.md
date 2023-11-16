@@ -90,12 +90,20 @@ For CIFAR100, you only need to specify the dataset downloaded path in [config.py
 
 
 ### Training
-- ddp training with simple bash file
+
+You can use bash script `train.sh` to train this model.
+
 ```bash
-cd vision/projects/classification/
-bash ddp_training.sh
+sh train.sh
+```
+
+### inference
+
+Bash script `infer.sh` is used to infer the trained model.
+
+```bash
+sh infer.sh
 ```
 
 
-## Reference
-- [Swin-Transformer](https://github.com/microsoft/Swin-Transformer)
+
