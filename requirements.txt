@@ -1,0 +1,3 @@
+yacs==0.1.8
+termcolor==2.3.0
+pycocotools==2.0.7
