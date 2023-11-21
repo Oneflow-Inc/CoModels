@@ -1,4 +1,4 @@
-## deit_3_large_224_1k
+## deit_large_patch16_LS_224
 
 ### Installation
 - Install the latest version of OneFlow
