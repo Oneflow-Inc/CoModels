@@ -1,4 +1,4 @@
-## fan_hybrid_base_in22k_1k_384
+## fan_base_16_p4_hybrid_in22k_1k_384
 
 ### Installation
 - Install the latest version of OneFlow

@@ -7,7 +7,7 @@ MODEL_ARCH="fan_base_16_p4_hybrid_in22k_1k_384"
 IMAGE_SIZE=384
 BATCH_SIZE=16
 LEARNING_RATE=1e-4
-export CUDA_VISIBLE_DEVICES=1,3
+
 python3 -m oneflow.distributed.launch \
         --nproc_per_node $GPU_NUMS \
         --master_addr 127.0.0.1 \
