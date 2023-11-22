@@ -30,6 +30,13 @@ You can use bash script `train.sh` to train this model.
 sh train.sh
 ```
 
-### Result
-
 During the training process, it will print out the inversion results of the three parameters C1, C2, and C3 every 100 iters.
+
+### Infer
+
+Bash script `infer.sh` is used to infer the trained model.
+
+```bash
+sh infer.sh
+```
+
