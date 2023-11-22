@@ -12,4 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-python3 main.py --type="infer"
+python3 main.py --type="infer" --pretrained=True
