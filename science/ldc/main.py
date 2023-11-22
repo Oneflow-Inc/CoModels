@@ -90,7 +90,7 @@ if __name__ == "__main__":
     if args.type=="train":
         # train
         print("Start train")
-        solver.train(num_epoch=100, log_frequency=100, checkpoint_frequency=1000)
+        solver.train(num_epoch=10000, log_frequency=100, checkpoint_frequency=1000)
     elif args.type=="infer":
         # infer
         print("Start infer")
