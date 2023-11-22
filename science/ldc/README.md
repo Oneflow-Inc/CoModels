@@ -18,6 +18,12 @@ You can use bash script `train.sh` to train this model.
 sh train.sh
 ```
 
-### Visualization
+### Infer
 
-After training, three files with a suffix of vtu will be generated, representing the horizontal flow velocity, vertical flow velocity, and pressure distribution of the LDC problem respectively. You can use software such as Paraview to visualize and post-process the results.
+Bash script `infer.sh` is used to infer the trained model.
+
+```bash
+sh infer.sh
+```
+
+After inference, three files with a suffix of vtu will be generated, representing the horizontal flow velocity, vertical flow velocity, and pressure distribution of the LDC problem respectively. You can use software such as Paraview to visualize and post-process the results.

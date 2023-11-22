@@ -18,6 +18,8 @@ from core.utils import ones, zeros
 from core.nn import FC, WeightedL2
 from core.pinns import Rectangle, NavierStokes2D, DirichletBC, PINNSolver
 import argparse
+import wget
+import os
 
 parser = argparse.ArgumentParser(description='manual to this script')
 parser.add_argument("--type", type=str, default="train")
@@ -79,14 +81,19 @@ def build_model():
 
 if __name__ == "__main__":
     solver = build_model()
+    # load pretrained
+    if not os.path.isfile('ldc.pt'):
+        url="https://oneflow-public.oss-cn-beijing.aliyuncs.com/ldc.pt"
+        wget.download(url,'ldc.pt')
+    
+    solver.load_checkpoint('ldc.pt')
     if args.type=="train":
         # train
         print("Start train")
-        solver.train(num_epoch=30000, log_frequency=100, checkpoint_frequency=1000)
+        solver.train(num_epoch=100, log_frequency=100, checkpoint_frequency=1000)
     elif args.type=="infer":
         # infer
         print("Start infer")
-        solver.load_checkpoint('log/checkpoint_30000.pt')
         solver.evaluate()
         solver.visualize()
 
