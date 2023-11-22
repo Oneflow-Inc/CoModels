@@ -23,6 +23,7 @@ import os
 
 parser = argparse.ArgumentParser(description='manual to this script')
 parser.add_argument("--type", type=str, default="train")
+parser.add_argument("--pretrained", type=bool, default=False)
 args = parser.parse_args()
 
 # set bc
@@ -82,15 +83,17 @@ def build_model():
 if __name__ == "__main__":
     solver = build_model()
     # load pretrained
-    if not os.path.isfile('ldc.pt'):
-        url="https://oneflow-public.oss-cn-beijing.aliyuncs.com/ldc.pt"
-        wget.download(url,'ldc.pt')
-    
-    solver.load_checkpoint('ldc.pt')
+    if args.pretrained:
+        print("Load checkpoint")
+        if not os.path.isfile('ldc.pt'):
+            url="https://oneflow-public.oss-cn-beijing.aliyuncs.com/ldc.of"
+            wget.download(url,'ldc.of')
+        solver.load_checkpoint('ldc.of')
+
     if args.type=="train":
         # train
         print("Start train")
-        solver.train(num_epoch=10000, log_frequency=100, checkpoint_frequency=1000)
+        solver.train(num_epoch=30000, log_frequency=100, checkpoint_frequency=1000)
     elif args.type=="infer":
         # infer
         print("Start infer")
