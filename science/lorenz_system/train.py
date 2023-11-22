@@ -73,5 +73,8 @@ solver = PINNSolver(network=net,
                     sups=[sup])
 
 # train
-# solver.load_checkpoint('log/checkpoint_10000.pt')
 solver.train(num_epoch=20000, log_frequency=100, checkpoint_frequency=1000)
+
+# infer
+# solver.load_checkpoint('log/checkpoint_10000.pt')
+solver.evaluate()

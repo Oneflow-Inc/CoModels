@@ -482,3 +482,12 @@ class PINNSolver(AISolver):
             if (idx + 1) % checkpoint_frequency == 0:
                 self.save_checkpoint(self.checkpoint_path + '/checkpoint_' +
                                      str(idx + 1) + '.pt')
+
+    def evaluate(self):
+        variables = self.pdes.get_variables()
+        if variables is not None:
+            print(f"Evaluate variables:")
+            for name in variables.names:
+                print(
+                    f"{name}: {getattr(variables, name).detach().cpu().numpy():.7g}"
+                )
