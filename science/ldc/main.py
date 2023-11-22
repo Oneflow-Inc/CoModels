@@ -85,7 +85,7 @@ if __name__ == "__main__":
     # load pretrained
     if args.pretrained:
         print("Load checkpoint")
-        if not os.path.isfile('ldc.pt'):
+        if not os.path.isfile('ldc.of'):
             url="https://oneflow-public.oss-cn-beijing.aliyuncs.com/ldc.of"
             wget.download(url,'ldc.of')
         solver.load_checkpoint('ldc.of')
