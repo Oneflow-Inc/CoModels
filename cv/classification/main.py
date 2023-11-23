@@ -9,7 +9,6 @@ import datetime
 import numpy as np
 import oneflow as flow
 import oneflow.backends.cudnn as cudnn
-
 from flowvision.loss.cross_entropy import (
     LabelSmoothingCrossEntropy,
     SoftTargetCrossEntropy,
@@ -285,7 +284,6 @@ def train_one_epoch(
                 )
             optimizer.step()
             lr_scheduler.step()
-
         one_sample_time.record(samples.size(0) * flow.env.get_world_size())
         loss_meter.record(loss.cpu().detach(), targets.size(0))
         
@@ -452,5 +450,4 @@ if __name__ == "__main__":
 
     # print config
     logger.info(config.dump())
-
     main(config)
