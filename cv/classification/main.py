@@ -7,6 +7,7 @@ import time
 import argparse
 import datetime
 import numpy as np
+import importlib.util
 import oneflow as flow
 import oneflow.backends.cudnn as cudnn
 
@@ -37,6 +38,15 @@ def build_model(config):
     model_arch = config.MODEL.ARCH
     model = ModelCreator.create_model(model_arch, pretrained=config.MODEL.PRETRAINED)
     return model
+
+
+def detect_device():
+    if flow.cuda.is_available():
+        return "cuda"
+    elif importlib.util.find_spec("oneflow_npu") is not None:
+        return "npu"
+    else:
+        return "cpu"
 
 
 def parse_option():
@@ -125,7 +135,7 @@ def parse_option():
     parser.add_argument(
         "--device",
         type=str,
-        default="cuda",
+        default=detect_device(),
         help="Specify the device to run the model on. Options: 'cuda', 'cpu', or 'npu'.",
     )
 
