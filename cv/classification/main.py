@@ -7,6 +7,7 @@ import time
 import argparse
 import datetime
 import numpy as np
+import importlib.util
 import oneflow as flow
 import oneflow.backends.cudnn as cudnn
 
@@ -37,6 +38,15 @@ def build_model(config):
     model_arch = config.MODEL.ARCH
     model = ModelCreator.create_model(model_arch, pretrained=config.MODEL.PRETRAINED)
     return model
+
+
+def detect_device():
+    if flow.cuda.is_available():
+        return "cuda"
+    elif importlib.util.find_spec("oneflow_npu") is not None:
+        return "npu"
+    else:
+        return "cpu"
 
 
 def parse_option():
@@ -122,10 +132,17 @@ def parse_option():
         required=False,
         help="local rank for DistributedDataParallel",
     )
+    parser.add_argument(
+        "--device",
+        type=str,
+        default=detect_device(),
+        help="Specify the device to run the model on. Options: 'cuda', 'cpu', or 'npu'.",
+    )
 
     args, unparsed = parser.parse_known_args()
 
     config = get_config(args)
+    config["DEVICE"] = args.device.lower()
 
     return args, config
 
@@ -141,7 +158,7 @@ def main(config):
 
     logger.info(f"Creating model:{config.MODEL.ARCH}")
     model = build_model(config)
-    model.cuda()
+    model.to(config.DEVICE)
 
     optimizer = build_optimizer(config, model)
     model = flow.nn.parallel.DistributedDataParallel(model, broadcast_buffers=False, use_bucket=False)
@@ -255,8 +272,8 @@ def train_one_epoch(
     start = time.time()
     end = time.time()
     for idx, (samples, targets) in enumerate(data_loader):
-        samples = samples.cuda()
-        targets = targets.cuda()
+        samples = samples.to(config.DEVICE)
+        targets = targets.to(config.DEVICE).to(flow.int32)
 
         if mixup_fn is not None:
             samples, targets = mixup_fn(samples, targets)
@@ -324,8 +341,8 @@ def validate(config, data_loader, model):
 
     end = time.time()
     for idx, (images, target) in enumerate(data_loader):
-        images = images.cuda()
-        target = target.cuda()
+        images = images.to(config.DEVICE)
+        target = target.to(config.DEVICE).to(flow.int32)
 
         # compute output
         output = model(images)
@@ -370,7 +387,7 @@ def throughput(data_loader, model, logger):
     model.eval()
 
     for idx, (images, _) in enumerate(data_loader):
-        images = images.cuda()
+        images = images.to(config.DEVICE)
         batch_size = images.shape[0]
         for i in range(50):
             model(images)
@@ -452,5 +469,8 @@ if __name__ == "__main__":
 
     # print config
     logger.info(config.dump())
+
+    if config.DEVICE == "npu":
+        import oneflow_npu
 
     main(config)

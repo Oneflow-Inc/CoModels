@@ -105,5 +105,18 @@ Bash script `infer.sh` is used to infer the trained model.
 sh infer.sh
 ```
 
+### Multi-Device Support (Experimental)
 
+This branch introduces preliminary support for running on different device types. By default, the training script now automatically selects the best available device in the following priority:
+1. CUDA (GPU)
+2. NPU (if oneflow_npu is installed)
+3. CPU (fallback)
+
+If you want to explicitly run on a specific device (e.g., NPU), you can still override the default by adding the following argument to your train.sh command:
+
+```bash
+--device=npu
+```
+
+> Note: The label_smoothing feature is currently not supported in this branch. If your configuration file (e.g., configs/default_settings.yaml) includes label_smoothing, please disable it(set to 0.0) to avoid errors.
 
