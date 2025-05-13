@@ -105,5 +105,13 @@ Bash script `infer.sh` is used to infer the trained model.
 sh infer.sh
 ```
 
+### Multi-Device Support (Experimental)
 
+This branch introduces preliminary support for running on different device types. To train on an NPU device, add the following argument to your train.sh command:
+
+```bash
+--device=npu
+```
+
+> Note: The label_smoothing feature is currently not supported in this branch. If your configuration file (e.g., configs/default_settings.yaml) includes label_smoothing, please disable it(set to 0.0) to avoid errors.
 
