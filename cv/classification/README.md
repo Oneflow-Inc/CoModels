@@ -107,7 +107,12 @@ sh infer.sh
 
 ### Multi-Device Support (Experimental)
 
-This branch introduces preliminary support for running on different device types. To train on an NPU device, add the following argument to your train.sh command:
+This branch introduces preliminary support for running on different device types. By default, the training script now automatically selects the best available device in the following priority:
+1. CUDA (GPU)
+2. NPU (if oneflow_npu is installed)
+3. CPU (fallback)
+
+If you want to explicitly run on a specific device (e.g., NPU), you can still override the default by adding the following argument to your train.sh command:
 
 ```bash
 --device=npu
